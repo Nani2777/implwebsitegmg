@@ -46,10 +46,14 @@ app.use(function(err, req, res, next) {
 module.exports = app;*/
 
 app.get('/',function(req,res){
-  res.send('We can host the HTML here by using below render method'); 
-  //res.render('test.html'); 
+  //res.send('We can host the HTML here by using below render method'); 
+  res.render('home_page.html'); 
 });
-app.get('/home',function(req,res){
+app.get('/category',function(req,res){
+  //res.send('We can host the HTML here by using below render method'); 
+  res.render('category.html'); 
+});
+app.get('/seniority',function(req,res){
   //res.send('Coming from home directory'); 
   res.render('index.html'); 
 });
