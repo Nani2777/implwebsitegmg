@@ -16,6 +16,8 @@ nunjucks.configure('views', {
 // view engine setup
 app.set('port', process.env.PORT || 2777);
 app.set('views', path.join(__dirname, 'views'));
+//app.use("/path1",path.join(__dirname + "/path1"));
+//app.use("/path2",path.join(__dirname + "/path2"));
 app.set('view engine', 'nunjucks');
 //app.set('views', path.join(__dirname, 'img')); - To give permissions to that folder
 
@@ -26,6 +28,7 @@ app.use(cookieParser());
 app.use("/public",express.static(__dirname + "/public"));
 app.use("/path1",express.static(__dirname + "/path1"));
 app.use("/path2",express.static(__dirname + "/path2"));
+//app.use("/",express.static(__dirname + "/"));
 
 
 // catch 404 and forward to error handler
@@ -61,6 +64,14 @@ app.get('/header',function(req,res){
 app.get('/seniority',function(req,res){
   //res.send('Coming from home directory'); 
   res.render('index.html'); 
+});
+app.get('/path1/',function(req,res){
+  //res.send('Coming from home directory'); 
+  res.render('index.html'); 
+});
+app.get('/path2/',function(req,res){
+  //res.send('Coming from home directory'); 
+  res.render('home_page.html'); 
 });
 app.listen(app.get('port'),function(){
   console.log('server started');
