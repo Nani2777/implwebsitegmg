@@ -24,7 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/public",express.static(__dirname + "/public"));
-
+app.use("/path1",express.static(__dirname + "/path1"));
+app.use("/path2",express.static(__dirname + "/path2"));
 
 
 // catch 404 and forward to error handler
