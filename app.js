@@ -65,9 +65,9 @@ app.get('/seniority',function(req,res){
   //res.send('Coming from home directory'); 
   res.render('index.html'); 
 });
-app.get('/path1/',function(req,res){
+app.get('/--',function(req,res){
   //res.send('Coming from home directory'); 
-  res.render('index.html'); 
+  res.render('--.html'); 
 });
 app.get('/path2/',function(req,res){
   //res.send('Coming from home directory'); 
