@@ -48,7 +48,11 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;*/
-
+app.post('/webhook',function(req,res){
+  console.log(req.body);
+  console.log(req.headers);
+  res.send({"status":"Success"});
+});
 app.get('/',function(req,res){
   //res.send('We can host the HTML here by using below render method'); 
   res.render('home_page.html'); 
