@@ -48,7 +48,14 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;*/
-app.post('/webhook',function(req,res){
+app.post('/iflwebhook',function(req,res){
+  console.log('ifl logs');
+  console.log(req.body);
+  console.log(req.headers);
+  res.send({"status":"Success"});
+});
+app.post('/stepwebhook',function(req,res){
+  console.log('step logs');
   console.log(req.body);
   console.log(req.headers);
   res.send({"status":"Success"});
