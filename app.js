@@ -62,8 +62,8 @@ app.post('/iflwebhook',function(req,res){
 });
 app.post('/karvywebhook',function(req,res){
   console.log('karvy logs');
-  console.log(req.body);
-  console.log(req.headers);
+  console.log(req.params);
+  //console.log(req.headers);
   res.send({"status":"Success"});
 });
 app.post('/stepwebhook',function(req,res){
