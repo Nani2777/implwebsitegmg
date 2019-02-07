@@ -48,6 +48,12 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;*/
+app.post('/moslwebhook',function(req,res){
+  console.log('ifl logs');
+  console.log(req.body);
+  console.log(req.headers);
+  res.send({"status":"Success"});
+});
 app.post('/iflwebhook',function(req,res){
   console.log('ifl logs');
   console.log(req.body);
