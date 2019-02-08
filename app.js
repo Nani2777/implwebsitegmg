@@ -69,7 +69,7 @@ app.post('/iflwebhook', function (req, res) {
 app.post('/karvywebhook', function (req, res) {
   var webhookData = req.body;
   console.log(typeof(webhookData));
-  if (typeof (webhookData) == 'Object') {
+  if (typeof (webhookData) == 'object') {
     webhookData.forEach(function (each) {
       if (each['EVENT'] == "sent" && each['EMAIL'] == "jagapathi@gamooga.com") {
         console.log(webhookData);
@@ -86,9 +86,9 @@ app.post('/karvywebhook', function (req, res) {
           "tp_id": tp_id,
           "tp_type": tp_type,
         });
-        var url = "http://evbk.gamooga.com/vpr/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v="+vid
-        Object.entries(d).forEach(
-          ([key, value]) => url = url + "&p=" + key + "&vl=" + value + "&tp=s"
+        var url = "http://evbk.gamooga.com/ev/?c="+comp_id+"&v="+vid+"&e="+event 
+        Object.entries(data).forEach(
+          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url)
         Request(url,function(err,response){
