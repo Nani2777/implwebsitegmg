@@ -67,9 +67,9 @@ app.post('/karvywebhook',function(req,res){
     if(each['EVENT'] == "sent"){
       var cmp_data = each['X-APIHEADER'];
       var json_d = JSON.parse(cmp_data);
-      console.log("Json data",json_d);
-      console.log('Type of x-api data',typeof(cmp_data),cmp_data);
-      var id = cmp_data.id;
+      //console.log("Json data",json_d);
+      //console.log('Type of x-api data',typeof(cmp_data),cmp_data);
+      var id = json_d.id;
       console.log("ID present in xapi",id);
     }
   })
