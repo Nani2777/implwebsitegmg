@@ -68,7 +68,7 @@ app.post('/iflwebhook', function (req, res) {
 });
 app.post('/karvywebhook', function (req, res) {
   var webhookData = req.body;
-  console.log(typeof(webhookData));
+  console.log(typeof (webhookData));
   if (typeof (webhookData) == 'object') {
     webhookData.forEach(function (each) {
       if (each['EVENT'] == "sent" && each['EMAIL'] == "jagapathi@gamooga.com") {
@@ -86,16 +86,16 @@ app.post('/karvywebhook', function (req, res) {
           "tp_id": tp_id,
           "tp_type": tp_type,
         });
-        var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v="+vid+"&e="+event 
+        var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + vid + "&e=" + event
         Object.entries(data).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url)
-        request.get({url:url},function(err,response,body){
-          if(err){
+        request.get({ url: url }, function (err, response, body) {
+          if (err) {
             console.log(err)
           }
-          console.log("response",response.statusCode)
+          console.log("response", response.statusCode)
         })
       }
     })
@@ -104,16 +104,39 @@ app.post('/karvywebhook', function (req, res) {
   res.end("OK");
 });
 
-app.get('/karvywebhook',function(req,res){
+app.get('/karvywebhook', function (req, res) {
   console.log('karvy SMS');
+  var data = req.query;
+  console.log(typeof (data));
   console.log(req.query);
-  var webhookresp = JSON.parse(req.query);
-  typeof(req.query);
-  webhookresp.forEach(function(data){
-    if(data['phoneno'] == '918555880637'){
-      console.log('Working');
-    }
-  })
+  if (data['phoneNo'] == '918555880637') {
+    var mobile = data['phoneNo'];
+    var status = data['status'];
+    var cause = data['cause'];
+    var error = data['errCode'];
+    var vid = 'j22Rwzjg4OHYvQnt';
+    var event = '_sms_delivered';
+    console.log(mobile, status, cause, error);
+    let fin_data = new Object({
+      "mobile": mobile,
+      "status": status,
+      "cause": cause,
+      "error": error
+    });
+    var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + vid + "&e=" + event
+    Object.entries(fin_data).forEach(
+      ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+    );
+    console.log(url)
+    request.get({ url: url }, function (err, response, body) {
+      if (err) {
+        console.log(err)
+      }
+      console.log("response", response.statusCode)
+      res.writeHead(200);
+      res.end("OK");
+    });
+  }
 });
 
 app.post('/stepwebhook', function (req, res) {
