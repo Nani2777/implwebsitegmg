@@ -62,9 +62,9 @@ app.post('/iflwebhook',function(req,res){
 });
 app.post('/karvywebhook',function(req,res){
   var webhookData = req.body;
-  console.log(webhookData);
   webhookData.forEach(function(each){
-    if(each['EVENT'] == "sent"){
+    if(each['EVENT'] == "sent" && each['EMAIL'] == "jagapathi@gamooga.com"){
+      console.log(webhookData);
       var cmp_data = each['X-APIHEADER'];
       var json_d = JSON.parse(cmp_data);
       //console.log("Json data",json_d);
