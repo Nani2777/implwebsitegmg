@@ -107,7 +107,8 @@ app.post('/karvywebhook', function (req, res) {
 app.get('/karvywebhook',function(req,res){
   console.log('karvy SMS');
   console.log(req.query);
-  var webhookresp = req.query;
+  var webhookresp = JSON.parse(req.query);
+  typeof(req.query);
   webhookresp.forEach(function(data){
     if(data['phoneno'] == '918555880637'){
       console.log('Working');
