@@ -23,12 +23,14 @@ app.set('view engine', 'nunjucks');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
-app.use("/public",express.static(__dirname + "/public"));
-app.use("/path1",express.static(__dirname + "/path1"));
-app.use("/path2",express.static(__dirname + "/path2"));
-app.use("/",express.static(__dirname + "/"));
+app.use("/public", express.static(__dirname + "/public"));
+app.use("/path1", express.static(__dirname + "/path1"));
+app.use("/path2", express.static(__dirname + "/path2"));
+app.use("/", express.static(__dirname + "/"));
 
 
 // catch 404 and forward to error handler
@@ -48,67 +50,92 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;*/
-app.post('/moslwebhook',function(req,res){
+app.post('/moslwebhook', function (req, res) {
   console.log('MOSL logs');
   console.log(req.body);
   console.log(req.headers);
-  res.send({"status":"Success"});
+  res.send({
+    "status": "Success"
+  });
 });
-app.post('/iflwebhook',function(req,res){
+app.post('/iflwebhook', function (req, res) {
   console.log('ifl logs');
   console.log(req.body);
   console.log(req.headers);
-  res.send({"status":"Success"});
+  res.send({
+    "status": "Success"
+  });
 });
-app.post('/karvywebhook',function(req,res){
+app.post('/karvywebhook', function (req, res) {
   var webhookData = req.body;
-  webhookData.forEach(function(each){
-    if(each['EVENT'] == "sent" && each['EMAIL'] == "jagapathi@gamooga.com"){
-      console.log(webhookData);
-      var cmp_data = each['X-APIHEADER'];
-      var campaign_data = JSON.parse(cmp_data);
-      var cp_id = campaign_data.cp_id;
-      var tp_id = campaign_data.tp_id;
-      var tp_type = campaign_data.tp_type;
-      var vid = campaign_data.vid;
-      var comp_id = campaign_data.comp_id;
-      let data = new Object({"cp_id":cp_id,"tp_id":tp_id,"tp_type":tp_type,"vid":vid,"comp_id":comp_id})
-      console.log("resultant data",data);
-      
-    }
-  })
-  res.send({"status":"Success"});
+  console.log(typeof(webhookData));
+  if (typeof (webhookData) == 'Object') {
+    webhookData.forEach(function (each) {
+      if (each['EVENT'] == "sent" && each['EMAIL'] == "jagapathi@gamooga.com") {
+        console.log(webhookData);
+        var cmp_data = each['X-APIHEADER'];
+        var campaign_data = JSON.parse(cmp_data);
+        var cp_id = campaign_data.cp_id;
+        var tp_id = campaign_data.tp_id;
+        var tp_type = campaign_data.tp_type;
+        var vid = campaign_data.vid;
+        var comp_id = campaign_data.comp_id;
+        var event = "_email_delivered"
+        let data = new Object({
+          "cp_id": cp_id,
+          "tp_id": tp_id,
+          "tp_type": tp_type,
+        });
+        var url = "http://evbk.gamooga.com/vpr/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v="+vid
+        Object.entries(d).forEach(
+          ([key, value]) => url = url + "&p=" + key + "&vl=" + value + "&tp=s"
+        );
+        console.log(url)
+        Request(url,function(err,response){
+          if(err){
+            console.log(err)
+          }
+          console.log(response.statusCode)
+        })
+      }
+    })
+  }
+  res.writeHead(200);
+  res.end("OK");
 });
-app.post('/stepwebhook',function(req,res){
+
+app.post('/stepwebhook', function (req, res) {
   console.log('step logs');
   console.log(req.body);
   console.log(req.headers);
-  res.send({"status":"Success"});
+  res.send({
+    "status": "Success"
+  });
 });
-app.get('/',function(req,res){
+app.get('/', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
-  res.render('home_page.html'); 
+  res.render('home_page.html');
 });
-app.get('/category',function(req,res){
+app.get('/category', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
-  res.render('category.html'); 
+  res.render('category.html');
 });
-app.get('/header',function(req,res){
+app.get('/header', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
-  res.render('header.html'); 
+  res.render('header.html');
 });
-app.get('/seniority',function(req,res){
+app.get('/seniority', function (req, res) {
   //res.send('Coming from home directory'); 
-  res.render('index.html'); 
+  res.render('index.html');
 });
-app.get('/--',function(req,res){
+app.get('/--', function (req, res) {
   //res.send('Coming from home directory'); 
-  res.render('--.html'); 
+  res.render('--.html');
 });
-app.get('/path2/',function(req,res){
+app.get('/path2/', function (req, res) {
   //res.send('Coming from home directory'); 
-  res.render('home_page.html'); 
+  res.render('home_page.html');
 });
-app.listen(app.get('port'),function(){
+app.listen(app.get('port'), function () {
   console.log('server started');
 });
