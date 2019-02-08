@@ -104,6 +104,12 @@ app.post('/karvywebhook', function (req, res) {
   res.end("OK");
 });
 
+app.get('/karvywebhook',function(req,res){
+  console.log('karvy SMS');
+  console.log(req.params);
+  console.log(req.body);
+});
+
 app.post('/stepwebhook', function (req, res) {
   console.log('step logs');
   console.log(req.body);
