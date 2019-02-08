@@ -62,6 +62,7 @@ app.post('/iflwebhook',function(req,res){
 });
 app.post('/karvywebhook',function(req,res){
   var webhookData = req.body;
+  console.log(webhookData);
   webhookData.forEach(function(each){
     if(each['EVENT'] == "sent"){
       var cmp_data = each["X-APIHEADER"];
