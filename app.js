@@ -66,11 +66,15 @@ app.post('/karvywebhook',function(req,res){
     if(each['EVENT'] == "sent" && each['EMAIL'] == "jagapathi@gamooga.com"){
       console.log(webhookData);
       var cmp_data = each['X-APIHEADER'];
-      var json_d = JSON.parse(cmp_data);
-      //console.log("Json data",json_d);
-      //console.log('Type of x-api data',typeof(cmp_data),cmp_data);
-      var id = json_d.id;
-      console.log("ID present in xapi",id);
+      var campaign_data = JSON.parse(cmp_data);
+      var cp_id = campaign_data.cp_id;
+      var tp_id = campaign_data.tp_id;
+      var tp_type = campaign_data.tp_type;
+      var vid = campaign_data.vid;
+      var comp_id = campaign_data.comp_id;
+      let data = new Object({"cp_id":cp_id,"tp_id":tp_id,"tp_type":tp_type,"vid":vid,"comp_id":comp_id})
+      console.log("resultant data",data);
+      
     }
   })
   res.send({"status":"Success"});
