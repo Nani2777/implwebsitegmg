@@ -61,10 +61,17 @@ app.post('/iflwebhook',function(req,res){
   res.send({"status":"Success"});
 });
 app.post('/karvywebhook',function(req,res){
-  console.log('karvy logs');
-  console.log(req.params);
-  console.log(req.body);
-  //console.log(req.headers);
+  var webhookData = req.body;
+  webhookData.forEach(function(each){
+    if(each['EVENT'] == "sent"){
+      var cmp_data = each["X-APIHEADER"];
+      var id = cmp_data.id;
+      console.log(id);
+    }
+  })
+  
+  
+  
   res.send({"status":"Success"});
 });
 app.post('/stepwebhook',function(req,res){
