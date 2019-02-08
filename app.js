@@ -65,14 +65,14 @@ app.post('/karvywebhook',function(req,res){
   console.log(webhookData);
   webhookData.forEach(function(each){
     if(each['EVENT'] == "sent"){
-      var cmp_data = each["X-APIHEADER"];
+      var cmp_data = each['X-APIHEADER'];
+      var json_d = JSON.parse(cmp_data);
+      console.log("Json data",json_d);
+      console.log('Type of x-api data',typeof(cmp_data),cmp_data);
       var id = cmp_data.id;
-      console.log(id);
+      console.log("ID present in xapi",id);
     }
   })
-  
-  
-  
   res.send({"status":"Success"});
 });
 app.post('/stepwebhook',function(req,res){
