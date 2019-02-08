@@ -86,16 +86,16 @@ app.post('/karvywebhook', function (req, res) {
           "tp_id": tp_id,
           "tp_type": tp_type,
         });
-        var url = "http://evbk.gamooga.com/ev/?c="+comp_id+"&v="+vid+"&e="+event 
+        var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v="+vid+"&e="+event 
         Object.entries(data).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url)
-        request(url,function(err,response){
+        request.get({url:url},function(err,response,body){
           if(err){
             console.log(err)
           }
-          console.log(response.statusCode)
+          console.log("response",response.statusCode)
         })
       }
     })
