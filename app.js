@@ -67,49 +67,57 @@ app.post('/iflwebhook', function (req, res) {
   });
 });
 app.post('/karvywebhook', function (req, res) {
-  var webhookData = req.body;
-  console.log(typeof (webhookData));
-  if (typeof (webhookData) == 'object') {
-    webhookData.forEach(function (each) {
-      if (each['EVENT'] == "sent" || each['EVENT'] == "bounced" || each['EVENT'] == "unsubscribed") {
-        console.log(webhookData);
-        var cmp_data = each['X-APIHEADER'];
-        var campaign_data = JSON.parse(cmp_data);
-        var vid = campaign_data.vid;
-        var comp_id = campaign_data.comp_id;
-        var camp_data = new Object(campaign_data.custom_params);
-        console.log(camp_data, typeof (camp_data));
-        var event = "_email_" + (each['EVENT'] == 'sent' ? 'delivered' : each['EVENT']);
-        var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
-        if (_check_bounce == 'true') {
-          camp_data['bounce_type'] = each['BOUNCE_TYPE']
-          camp_data['bounce_reason'] = each['BOUNCE_REASON']
-        }
-        var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + vid + "&e=" + event
-        Object.entries(camp_data).forEach(
-          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
-        );
-        console.log(url)
-        request.get({
-          url: url
-        }, function (err, response, body) {
-          if (err) {
-            console.log(err)
+  try {
+    var webhookData = req.body;
+    if (typeof (webhookData) == 'object') {
+      webhookData.forEach(function (each) {
+        if (each['EVENT'] == "sent" || each['EVENT'] == "bounced" || each['EVENT'] == "unsubscribed") {
+          try {
+            var cmp_data = each['X-APIHEADER'];
+            var campaign_data = JSON.parse(cmp_data);
+            var vid = campaign_data.vid;
+            var comp_id = campaign_data.comp_id;
+            var camp_data = new Object(campaign_data.custom_params);
+            var event = "_email_" + (each['EVENT'] == 'sent' ? 'delivered' : each['EVENT']);
+            var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
+            if (_check_bounce == 'true') {
+              camp_data['bounce_type'] = each['BOUNCE_TYPE']
+              camp_data['bounce_reason'] = each['BOUNCE_REASON']
+            }
+            var url = "http://evbk.gamooga.com/ev/?c="+comp_id+"&v=" + vid + "&e=" + event
+            Object.entries(camp_data).forEach(
+              ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+            );
+            request.get({
+              url: url
+            }, function (err, response, body) {
+              if (err) {
+                console.log("Error in gamooga post event",err);
+              }
+
+            })
+          } catch (err) {
+            console.log('Error in entries for the Mandrill req data', req.body);
+            res.writeHead(200);
+            res.end("ERROR");
           }
-          console.log("response", response.statusCode)
-        })
-      }
-    })
+        }
+      })
+    }
+    res.writeHead(200);
+    res.end("OK");
+  } catch (err) {
+    console.log('Error in Webhook from Pepipost \n%s', err);
+    res.writeHead(200);
+    res.end("ERROR");
   }
-  res.writeHead(200);
-  res.end("OK");
 });
 
 app.get('/karvywebhook', function (req, res) {
   console.log('karvy SMS');
   var data = req.query;
   console.log(typeof (data));
-  console.log(req.query); 
+  console.log(req.query);
   if (data['phoneNo'] == '918555880637') {
     var mobile = data['phoneNo'];
     var status = data['status'];
@@ -139,7 +147,7 @@ app.get('/karvywebhook', function (req, res) {
       res.writeHead(200);
       res.end("OK");
     });
-  } 
+  }
   var cmp_data = data['extra'];
   var campaign_data = JSON.parse(cmp_data);
   var camp_data = new Object(campaign_data.cust_params);
