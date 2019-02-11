@@ -79,7 +79,7 @@ app.post('/karvywebhook', function (req, res) {
         var comp_id = campaign_data.comp_id;
         var camp_data = new Object(campaign_data.custom_params);
         console.log(camp_data,typeof(camp_data));
-        var event = "_email_"+(each['event'] == 'sent' ? 'delivered' : each['event'])
+        var event = "_email_"+(each['EVENT'] == 'sent' ? 'delivered' : each['EVENT']);
         var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + vid + "&e=" + event
         Object.entries(camp_data).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
