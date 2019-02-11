@@ -71,23 +71,16 @@ app.post('/karvywebhook', function (req, res) {
   console.log(typeof (webhookData));
   if (typeof (webhookData) == 'object') {
     webhookData.forEach(function (each) {
-      if (each['EVENT'] == "sent" && each['EMAIL'] == "jagapathi@gamooga.com") {
+      if (each['EVENT'] == "sent" || each['EVENT'] == "bounced" || each['EVENT'] == "unsubscribed") {
         console.log(webhookData);
         var cmp_data = each['X-APIHEADER'];
         var campaign_data = JSON.parse(cmp_data);
-        var cp_id = campaign_data.cp_id;
-        var tp_id = campaign_data.tp_id;
-        var tp_type = campaign_data.tp_type;
         var vid = campaign_data.vid;
         var comp_id = campaign_data.comp_id;
-        var event = "_email_delivered"
-        let data = new Object({
-          "cp_id": cp_id,
-          "tp_id": tp_id,
-          "tp_type": tp_type,
-        });
+        var custom_params = campaign_data.custom_params
+        var event = "_email_"+(entry['event'] == 'sent' ? 'delivered' : entry['event'])
         var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + vid + "&e=" + event
-        Object.entries(data).forEach(
+        Object.entries(custom_params).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url)
