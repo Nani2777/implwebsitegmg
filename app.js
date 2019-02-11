@@ -78,14 +78,21 @@ app.post('/karvywebhook', function (req, res) {
         var vid = campaign_data.vid;
         var comp_id = campaign_data.comp_id;
         var camp_data = new Object(campaign_data.custom_params);
-        console.log(camp_data,typeof(camp_data));
-        var event = "_email_"+(each['EVENT'] == 'sent' ? 'delivered' : each['EVENT']);
+        console.log(camp_data, typeof (camp_data));
+        var event = "_email_" + (each['EVENT'] == 'sent' ? 'delivered' : each['EVENT']);
+        var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
+        if (_check_bounce == 'true') {
+          camp_data['bounce_type'] = each['BOUNCE_TYPE']
+          camp_data['bounce_reason'] = each['BOUNCE_REASON']
+        }
         var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + vid + "&e=" + event
         Object.entries(camp_data).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url)
-        request.get({ url: url }, function (err, response, body) {
+        request.get({
+          url: url
+        }, function (err, response, body) {
           if (err) {
             console.log(err)
           }
@@ -122,7 +129,9 @@ app.get('/karvywebhook', function (req, res) {
       ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
     );
     console.log(url)
-    request.get({ url: url }, function (err, response, body) {
+    request.get({
+      url: url
+    }, function (err, response, body) {
       if (err) {
         console.log(err)
       }
