@@ -158,7 +158,7 @@ app.get('/karvywebhook', function (req, res) {
     }
   }
   catch (err) {
-    console.log('Error in Webhook from Gupshup', err);
+    console.log('Error in Webhook from Gupshup object');
     res.writeHead(200);
     res.end("ERROR");
   }
