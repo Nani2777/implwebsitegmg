@@ -69,7 +69,7 @@ app.post('/iflwebhook', function (req, res) {
 app.post('/karvywebhook', function (req, res) {
   try {
     var webhookData = req.body;
-    console.log(webhookData);
+    console.log("My Data",webhookData);
     if (typeof (webhookData) == 'object') {
       webhookData.forEach(function (each) {
         if (each['EVENT'] == "sent" || each['EVENT'] == "bounced" || each['EVENT'] == "unsubscribed") {
