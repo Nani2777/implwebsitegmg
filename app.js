@@ -108,7 +108,7 @@ app.post('/karvywebhook', function (req, res) {
     res.writeHead(200);
     res.end("OK");
   } catch (err) {
-    console.log('Error in Webhook from Pepipost',err);
+    console.log('Error in Webhook from Pepipost');
     res.writeHead(200);
     res.end("ERROR");
   }
