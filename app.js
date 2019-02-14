@@ -98,7 +98,7 @@ app.post('/karvywebhook', function (req, res) {
 
             })
           } catch (err) {
-            console.log('Error in entries for the Pepipost req data', req.body);
+            console.log('Error in entries for the Pepipost req data', err);
             res.writeHead(200);
             res.end("ERROR");
           }
@@ -108,7 +108,7 @@ app.post('/karvywebhook', function (req, res) {
     res.writeHead(200);
     res.end("OK");
   } catch (err) {
-    console.log('Error in Webhook from Pepipost',req.body);
+    console.log('Error in Webhook from Pepipost',err);
     res.writeHead(200);
     res.end("ERROR");
   }
@@ -177,11 +177,16 @@ app.post('/karvymailkootwebhook', function (req, res) {
 app.post('/stepwebhook', function (req, res) {
   console.log('step logs');
   console.log(req.body);
-  console.log(req.headers);
+  //console.log(req.headers);
   res.send({
     "status": "Success"
   });
 });
+
+app.post('/iflwebhook', function(req,res){
+  console.log('IFLI WebHOOK');
+  console.log(req.body);
+})
 app.get('/', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
   res.render('home_page.html');
