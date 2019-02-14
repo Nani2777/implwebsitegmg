@@ -59,12 +59,11 @@ app.post('/moslwebhook', function (req, res) {
   });
 });
 app.post('/iflwebhook', function (req, res) {
-  console.log('ifl logs');
+  console.log('IFLI WEBHOOKS LOGS');
   console.log(req.body);
-  console.log(req.headers);
-  res.send({
-    "status": "Success"
-  });
+  //console.log(req.headers);
+  res.writeHead(200);
+  res.end("OK");
 });
 app.post('/karvywebhook', function (req, res) {
   try {
@@ -183,10 +182,7 @@ app.post('/stepwebhook', function (req, res) {
   });
 });
 
-app.post('/iflwebhook', function(req,res){
-  console.log('IFLI WebHOOK');
-  console.log(req.body);
-})
+
 app.get('/', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
   res.render('home_page.html');
