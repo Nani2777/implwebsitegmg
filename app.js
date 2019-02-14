@@ -69,6 +69,7 @@ app.post('/iflwebhook', function (req, res) {
 app.post('/karvywebhook', function (req, res) {
   try {
     var webhookData = req.body;
+    console.log(webhookData);
     if (typeof (webhookData) == 'object') {
       webhookData.forEach(function (each) {
         if (each['EVENT'] == "sent" || each['EVENT'] == "bounced" || each['EVENT'] == "unsubscribed") {
@@ -97,7 +98,7 @@ app.post('/karvywebhook', function (req, res) {
 
             })
           } catch (err) {
-            console.log('Error in entries for the Mandrill req data', req.body);
+            console.log('Error in entries for the Pepipost req data', req.body);
             res.writeHead(200);
             res.end("ERROR");
           }
@@ -107,7 +108,7 @@ app.post('/karvywebhook', function (req, res) {
     res.writeHead(200);
     res.end("OK");
   } catch (err) {
-    console.log('Error in Webhook from Pepipost \n%s', err);
+    console.log('Error in Webhook from Pepipost',req.body);
     res.writeHead(200);
     res.end("ERROR");
   }
