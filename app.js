@@ -166,7 +166,7 @@ app.get('/karvywebhook', function (req, res) {
 
 app.post('/karvymailkootwebhook', function (req, res) {
   console.log('Karvy Mailkoot logs');
-  let webhookData = JSON.parse(req.body);
+  let webhookData = req.body;
   console.log(webhookData);
   if(webhookData.event_type == "delivery_attempt" && webhookData.email == "jagapathi@gamooga.com"){
     console.log('Delivery event is done');
