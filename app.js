@@ -68,7 +68,6 @@ app.post('/iflwebhook', function (req, res) {
 app.post('/karvywebhook', function (req, res) {
   try {
     var webhookData = req.body;
-    //console.log("My Data",webhookData);
     if (typeof (webhookData) == 'object') {
       webhookData.forEach(function (each) {
         if (each['EVENT'] == "sent" || each['EVENT'] == "bounced" || each['EVENT'] == "unsubscribed") {
@@ -88,14 +87,11 @@ app.post('/karvywebhook', function (req, res) {
             Object.entries(camp_data).forEach(
               ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
             );
-            request.get({
-              url: url
-            }, function (err, response, body) {
-              if (err) {
-                console.log("Error in gamooga post event", err);
-              }
-
-            })
+            axios.get(url).then(function (response) {
+              console.log(response)
+            }).catch(function (error) {
+              console.log(error);
+            });
           } catch (err) {
             console.log('Error in entries for the Pepipost req data', err);
             res.writeHead(200);
@@ -141,23 +137,18 @@ app.get('/karvywebhook', function (req, res) {
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url)
-        request.get({ url: url }, function (err, response, body) {
-          if (err) {
-            console.log(err)
-          }
-          console.log("response", response.statusCode)
-          res.writeHead(200);
-          res.end("OK");
+        axios.get(url).then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error);
         });
-      }
-      catch (err) {
+      } catch (err) {
         console.log('Error in Webhook from Gamooga Event API', err);
         res.writeHead(200);
         res.end("ERROR");
       }
     }
-  }
-  catch (err) {
+  } catch (err) {
     console.log('Error in Webhook from Gupshups object \n%s', err);
     res.writeHead(200);
     res.end("ERROR");
@@ -168,7 +159,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
   console.log('Karvy Mailkoot logs');
   let webhookData = req.body;
   console.log(webhookData);
-  if(webhookData.event_type == "delivery_attempt" && webhookData.email == "jagapathi@gamooga.com"){
+  if (webhookData.event_type == "delivery_attempt" && webhookData.email == "jagapathi@gamooga.com") {
     console.log('Delivery event is done');
   }
   res.writeHead(200);
@@ -178,7 +169,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
 app.post('/stepwebhook', function (req, res) {
   console.log('step logs');
   console.log(req.body);
-  console.log("req",req);
+  console.log("req", req);
   res.writeHead(200);
   res.end("OK");
 });
