@@ -171,6 +171,8 @@ app.post('/karvymailkootwebhook', function (req, res) {
   if(webhookData.event_type == "delivery_attempt" && webhookData.email == "jagapathi@gamooga.com"){
     console.log('Delivery event is done');
   }
+  res.writeHead(200);
+  res.end("OK");
 });
 
 app.post('/stepwebhook', function (req, res) {
