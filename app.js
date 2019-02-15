@@ -180,6 +180,14 @@ app.post('/stepwebhook', function (req, res) {
   res.end("OK");
 });
 
+app.get('/stepwebhook', function (req, res) {
+  console.log('step logs');
+  console.log(req.body);
+  console.log(req.query);
+  res.writeHead(200);
+  res.end("OK");
+});
+
 
 app.get('/', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
