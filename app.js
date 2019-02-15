@@ -176,10 +176,8 @@ app.post('/karvymailkootwebhook', function (req, res) {
 app.post('/stepwebhook', function (req, res) {
   console.log('step logs');
   console.log(req.body);
-  //console.log(req.headers);
-  res.send({
-    "status": "Success"
-  });
+  res.writeHead(200);
+  res.end("OK");
 });
 
 
