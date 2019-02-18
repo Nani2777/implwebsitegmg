@@ -4,7 +4,7 @@ var cookieParser = require('cookie-parser');
 var nunjucks = require('nunjucks');
 var logger = require('morgan');
 var request = require('request');
-var axios  = require('axios');
+var axios = require('axios');
 var app = express();
 
 nunjucks.configure('views', {
@@ -175,15 +175,12 @@ app.post('/stepwebhook', function (req, res) {
   res.end("OK");
 });
 
-app.get('/stepwebhook', function (req, res) {
-  console.log('step logs');
-  console.log(req.body);
+app.get('/wooplrwebhook', function (req, res) {
+  console.log('wooplr SMS');
+  var data = req.query;
+  console.log(typeof (data));
   console.log(req.query);
-  res.writeHead(200);
-  res.end("OK");
 });
-
-
 
 app.get('/', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
