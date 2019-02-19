@@ -6,6 +6,14 @@ var logger = require('morgan');
 var request = require('request');
 var axios = require('axios');
 var app = express();
+var logger = require('./logger').Logger;
+
+
+app.use(function timeLog(req, res, next) {
+  // this is an example of how you would call our new logging system to log an info message
+  logger.info("Test Message");
+  next();
+});
 
 nunjucks.configure('views', {
   autoescape: true,
