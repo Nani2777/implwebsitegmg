@@ -186,12 +186,55 @@ app.post('/stepwebhook', function (req, res) {
 });
 
 app.get('/wooplrwebhook', function (req, res) {
-  console.log('wooplr SMS');
-  Logger.info('wooplr SMS');
-  var data = req.query;
-  console.log(typeof (data));
-  Logger.debug(JSON.stringify(req.body));
-  //console.log(req.query);
+  try {
+    console.log('Wooplr SMS');
+    Logger.info('Wooplr SMS');
+    var data = req.query;
+    if (typeof (data) == 'object') {
+      //console.log(typeof (data));
+      //console.log(req.query);
+      Logger.debug(JSON.stringify(req.query));
+      var cmp_data = data['extra'];
+      var campaign_data = JSON.parse(cmp_data);
+      var camp_data = new Object(campaign_data.cust_params);
+      var vid = campaign_data['vid'];
+      var comp_id = campaign_data['comp_id'];
+      var mobile = data['phoneNo'];
+      var status = data['status'];
+      var cause = data['cause'];
+      var error = data['errCode'];
+      var event = '_sms_delivered';
+      camp_data["mobile"] = mobile;
+      camp_data["status"] = status;
+      camp_data["cause"] = cause;
+      camp_data["error"] = error;
+      console.log(camp_data);
+      Logger.debug(camp_data);
+      try {
+        var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + vid + "&e=" + event
+        Object.entries(camp_data).forEach(
+          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+        );
+        console.log(url)
+        axios.get(url).then(function (response) {
+          console.log(response)
+          Logger.debug(response)
+        }).catch(function (error) {
+          console.log(error);
+          Logger.error(error);
+        });
+      } catch (err) {
+        console.log('Error in Webhook from Gamooga Event API', err);
+        res.writeHead(200);
+        res.end("ERROR");
+      }
+    }
+  } catch (err) {
+    console.log('Error in Webhook from Gupshups object \n%s', err);
+    Logger.error('Error in Webhook from Gupshups object \n%s', err);
+    res.writeHead(200);
+    res.end("ERROR");
+  }
 });
 
 app.get('/', function (req, res) {
