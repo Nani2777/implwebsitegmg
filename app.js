@@ -69,7 +69,7 @@ app.post('/iflwebhook', function (req, res) {
   console.log('IFLI WEBHOOKS LOGS');
   Logger.info('IFLI WEBHOOKS LOGS');
   console.log(req.body);
-  Logger.debug(req.body);
+  Logger.debug(JSON.stringify(req.body));
   //console.log(req.headers);
   res.writeHead(200);
   res.end("OK");
@@ -187,8 +187,10 @@ app.post('/stepwebhook', function (req, res) {
 
 app.get('/wooplrwebhook', function (req, res) {
   console.log('wooplr SMS');
+  Logger.info('wooplr SMS');
   var data = req.query;
   console.log(typeof (data));
+  Logger.debug(JSON.stringify(req.body));
   //console.log(req.query);
 });
 
