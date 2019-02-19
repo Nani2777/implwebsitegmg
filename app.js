@@ -179,7 +179,7 @@ app.get('/wooplrwebhook', function (req, res) {
   console.log('wooplr SMS');
   var data = req.query;
   console.log(typeof (data));
-  console.log(req.query);
+  //console.log(req.query);
 });
 
 app.get('/', function (req, res) {
