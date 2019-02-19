@@ -6,12 +6,12 @@ var logger = require('morgan');
 var request = require('request');
 var axios = require('axios');
 var app = express();
-var logger = require('./logger').Logger;
+var Logger = require('./logger').Logger;
 
 
 app.use(function timeLog(req, res, next) {
   // this is an example of how you would call our new logging system to log an info message
-  logger.info("Test Message");
+  Logger.info("Test Message");
   next();
 });
 
@@ -67,7 +67,9 @@ app.post('/moslwebhook', function (req, res) {
 });
 app.post('/iflwebhook', function (req, res) {
   console.log('IFLI WEBHOOKS LOGS');
+  Logger.info('IFLI WEBHOOKS LOGS');
   console.log(req.body);
+  Logger.debug(req.body);
   //console.log(req.headers);
   res.writeHead(200);
   res.end("OK");
