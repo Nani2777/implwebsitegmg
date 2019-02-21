@@ -190,7 +190,7 @@ app.post('/stepwebhook', function (req, res) {
 
 app.get('/wooplrwebhook', function (req, res) {
   try {
-    console.log('Wooplr SMS');
+    //console.log('Wooplr SMS');
     Logger.info('Wooplr SMS');
     var data = req.query;
     if (typeof (data) == 'object') {
@@ -231,8 +231,8 @@ app.get('/wooplrwebhook', function (req, res) {
       }
     }
   } catch (err) {
-    console.log('Error in Webhook from Gupshups object \n%s', err);
-    Logger.error('Error in Webhook from Gupshups object \n%s', err);
+    //console.log('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    Logger.error('Wooplr Error in Webhook from Gupshups object \n%s', err);
     res.writeHead(200);
     res.end("ERROR");
   }
