@@ -7,6 +7,7 @@ var request = require('request');
 var axios = require('axios');
 var app = express();
 var Logger = require('./logger').Logger;
+var bodyParser = require('body-parser');
 
 
 app.use(function timeLog(req, res, next) {
@@ -30,6 +31,7 @@ app.set('view engine', 'nunjucks');
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(bodyParser.text());
 app.use(express.urlencoded({
   extended: false
 }));
@@ -180,7 +182,8 @@ app.post('/stepwebhook', function (req, res) {
   console.log(req.body);
   console.log(req.query);
   console.log(req.params);
-  console.log("req", req);
+  console.log(req.headers);
+  //console.log("req", req);
   res.writeHead(200);
   res.end("OK");
 });
@@ -217,8 +220,6 @@ app.get('/wooplrwebhook', function (req, res) {
         );
         console.log(url)
         axios.get(url).then(function (response) {
-          console.log(response)
-          Logger.debug(response)
         }).catch(function (error) {
           console.log(error);
           Logger.error(error);
