@@ -173,7 +173,6 @@ app.get('/karvywebhook', function (req, res) {
     if (webhookData.event_type == "delivery_attempt") {
       console.log('Delivery event is done');
     }
-    res.writeHead(200);
     res.end("ok");
   });
 
