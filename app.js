@@ -137,9 +137,9 @@ app.get('/karvywebhook', function (req, res) {
         );
         console.log(url)
         axios.get(url).then(function (response) {
-          console.log(response)
+          console.log("Api Success done");
         }).catch(function (error) {
-          console.log(error);
+          console.log("Error present in API");
         });
       } catch (err) {
         console.log('Error in Webhook from Gamooga Event API', err);
@@ -158,7 +158,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
   console.log('Karvy Mailkoot logs');
   let webhookData = req.body;
   console.log(webhookData);
-  if (webhookData.event_type == "delivery_attempt" && webhookData.email == "jagapathi@gamooga.com") {
+  if (webhookData.event_type == "delivery_attempt") {
     console.log('Delivery event is done');
   }
   res.writeHead(200);
