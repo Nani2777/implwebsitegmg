@@ -176,7 +176,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
     //webhookData.forEach(function (each) {
       if (webhookData['event_type'] == "delivery_attempt") {
         try {
-          var cmp_data = each['click_tracking_id'];
+          var cmp_data = webhookData['click_tracking_id'];
           var campaign_data = JSON.parse(cmp_data);
           var vid = campaign_data.vid;
           var comp_id = campaign_data.comp_id;
