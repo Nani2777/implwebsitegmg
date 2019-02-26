@@ -172,7 +172,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
   //if (webhookData.event_type == "delivery_attempt" && webhookData.status == "success") {
   //var webhookData = req.body;
   if (typeof (webhookData) == 'object') {
-    console.log(webhookData.click_tracking_id);
+    console.log(webhookData);
     //webhookData.forEach(function (each) {
       if (webhookData['event_type'] == "delivery_attempt") {
         try {
