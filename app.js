@@ -172,7 +172,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
   //if (webhookData.event_type == "delivery_attempt" && webhookData.status == "success") {
   //var webhookData = req.body;
   if (typeof (webhookData) == 'object') {
-    console.log(webhookData);
+    console.log(webhookData.click_tracking_id);
     //webhookData.forEach(function (each) {
       if (webhookData['event_type'] == "delivery_attempt") {
         try {
@@ -181,6 +181,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
           var vid = campaign_data.vid;
           var comp_id = campaign_data.comp_id;
           var camp_data = new Object(campaign_data.custom_params);
+          console.log(camp_data,campaign_data);
           if (webhookData['status'] == 'success') {
             var event = "_email_delivered";
           }
