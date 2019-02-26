@@ -166,15 +166,52 @@ app.get('/karvywebhook', function (req, res) {
   }
 });
 
-  app.post('/karvymailkootwebhook', function (req, res) {
-    console.log('Karvy Mailkoot logs');
-    let webhookData = req.body;
-    console.log(webhookData);
-    if (webhookData.event_type == "delivery_attempt") {
-      console.log('Delivery event is done');
-    }
-    res.end("ok");
-  });
+app.post('/karvymailkootwebhook', function (req, res) {
+  console.log('Karvy Mailkoot logs');
+  let webhookData = req.body;
+  //if (webhookData.event_type == "delivery_attempt" && webhookData.status == "success") {
+  var webhookData = req.body;
+  if (typeof (webhookData) == 'object') {
+    webhookData.forEach(function (each) {
+      if (each['event_type'] == "delivery_attempt") {
+        try {
+          var cmp_data = each['click_tracking_id'];
+          var campaign_data = JSON.parse(cmp_data);
+          var vid = campaign_data.vid;
+          var comp_id = campaign_data.comp_id;
+          var camp_data = new Object(campaign_data.custom_params);
+          if (each['status'] == 'success') {
+            var event = "_email_delivered";
+          }
+          else {
+            var event = "_email_bounced";
+          }
+          var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
+          if (_check_bounce == 'true') {
+            camp_data['bounce_type'] = each['BOUNCE_TYPE']
+            camp_data['bounce_reason'] = each['BOUNCE_REASON']
+          }
+          var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
+          Object.entries(camp_data).forEach(
+            ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+          );
+          axios.get(url).then(function (response) {
+            console.log(response)
+          }).catch(function (error) {
+            console.log(error);
+          });
+        } catch (err) {
+          console.log('Error in entries for the Pepipost req data', err);
+          res.writeHead(200);
+          res.end("ERROR");
+        }
+      }
+    })
+  }
+  res.writeHead(200);
+  res.end("OK");
+  //}
+});
 
 app.post('/stepwebhook', function (req, res) {
   console.log('step logs');
