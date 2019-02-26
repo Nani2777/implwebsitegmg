@@ -170,7 +170,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
   console.log('Karvy Mailkoot logs');
   let webhookData = req.body;
   //if (webhookData.event_type == "delivery_attempt" && webhookData.status == "success") {
-  var webhookData = req.body;
+  //var webhookData = req.body;
   if (typeof (webhookData) == 'object') {
     webhookData.forEach(function (each) {
       if (each['event_type'] == "delivery_attempt") {
