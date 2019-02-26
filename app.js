@@ -172,15 +172,16 @@ app.post('/karvymailkootwebhook', function (req, res) {
   //if (webhookData.event_type == "delivery_attempt" && webhookData.status == "success") {
   //var webhookData = req.body;
   if (typeof (webhookData) == 'object') {
-    webhookData.forEach(function (each) {
-      if (each['event_type'] == "delivery_attempt") {
+    console.log(webhookData);
+    //webhookData.forEach(function (each) {
+      if (webhookData['event_type'] == "delivery_attempt") {
         try {
           var cmp_data = each['click_tracking_id'];
           var campaign_data = JSON.parse(cmp_data);
           var vid = campaign_data.vid;
           var comp_id = campaign_data.comp_id;
           var camp_data = new Object(campaign_data.custom_params);
-          if (each['status'] == 'success') {
+          if (webhookData['status'] == 'success') {
             var event = "_email_delivered";
           }
           else {
@@ -188,8 +189,8 @@ app.post('/karvymailkootwebhook', function (req, res) {
           }
           var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
           if (_check_bounce == 'true') {
-            camp_data['bounce_type'] = each['BOUNCE_TYPE']
-            camp_data['bounce_reason'] = each['BOUNCE_REASON']
+            camp_data['bounce_type'] = webhookData['BOUNCE_TYPE']
+            camp_data['bounce_reason'] = webhookData['BOUNCE_REASON']
           }
           var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
           Object.entries(camp_data).forEach(
@@ -206,7 +207,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
           res.end("ERROR");
         }
       }
-    })
+    //})
   }
   res.writeHead(200);
   res.end("OK");
