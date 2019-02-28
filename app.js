@@ -67,7 +67,8 @@ app.post('/moslwebhook', function (req, res) {
     console.log(typeof(data));
     if(typeof(data) == 'object'){
       //console.log(data.mobile);
-      //console.log(data.status);
+      console.log(data.status);
+      console.log(data);
       console.log(data.jobname);
     }
   }catch{
