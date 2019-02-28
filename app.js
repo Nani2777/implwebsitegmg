@@ -63,12 +63,12 @@ app.post('/moslwebhook', function (req, res) {
   console.log('MOSL logs');
   try{
     console.log(req.body);
-    var data = req.body;
+    //var data = req.body;
     console.log(typeof(data));
     if(typeof(data) == 'object'){
-      console.log(data.mobile);
-      console.log(data.status);
-      console.log(jobname);
+      //console.log(data.mobile);
+      //console.log(data.status);
+      console.log(data.jobname);
     }
   }catch{
 
