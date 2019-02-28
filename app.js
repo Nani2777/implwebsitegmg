@@ -61,8 +61,18 @@ app.use(function(err, req, res, next) {
 module.exports = app;*/
 app.post('/moslwebhook', function (req, res) {
   console.log('MOSL logs');
-  console.log(req.body);
-  console.log(req.headers);
+  try{
+    console.log(req.body);
+    var data = req.body;
+    console.log(typeof(data));
+    if(typeof(data) == 'object'){
+      console.log(data.mobile);
+      console.log(data.status);
+      console.log(jobname);
+    }
+  }catch{
+
+  }
   res.send({
     "status": "Success"
   });
@@ -190,8 +200,8 @@ app.post('/karvymailkootwebhook', function (req, res) {
           }
           var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
           if (_check_bounce == 'true') {
-            camp_data['bounce_type'] = webhookData['BOUNCE_TYPE']
-            camp_data['bounce_reason'] = webhookData['BOUNCE_REASON']
+            camp_data['bounce_type'] = webhookData['bounce_type']
+            camp_data['bounce_reason'] = webhookData['bounce_text']
           }
           var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
           Object.entries(camp_data).forEach(
