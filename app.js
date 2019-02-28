@@ -62,12 +62,13 @@ module.exports = app;*/
 app.post('/moslwebhook', function (req, res) {
   console.log('MOSL logs');
   try{
-    console.log(req.body);
+    //console.log(req.body);
     //var data = req.body;
     console.log(typeof(data));
     if(typeof(data) == 'object'){
       if(data.mobile == '918555880637'){
       //console.log(data.mobile);
+      console.log(req.body);
       console.log(data.status);
       console.log(data);
       console.log(data.jobname);
