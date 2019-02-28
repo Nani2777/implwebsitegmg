@@ -66,7 +66,7 @@ app.post('/moslwebhook', function (req, res) {
     //var data = req.body;
     console.log(typeof(data));
     if(typeof(data) == 'object'){
-      if(data.mobile == '918555880637'){
+      if(data.mobile == '918555880637' || data.mobile == '8555880637'){
       //console.log(data.mobile);
       console.log(req.body);
       console.log(data.status);
