@@ -79,13 +79,16 @@ app.post('/moslwebhook', function (req, res) {
           obj[fin[0]] = fin[1];
         }
         console.log(obj);
-        var url = "http://evbk.gamooga.com/ev/?c=" + obj.comp_id + "&v=" + obj.vid + "&e=_sms_delivered"
-        Object.entries(obj).forEach(
-          ([key, value]) => {
-            if (!obj.comp_id && !obj.vid) {
-              url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
-            }
-          });
+        let custom_params = Object.keys(d).reduce((object,key)=>{
+          if(key !== "comp_id" && key !== "vid"){
+          object[key] = d[key]
+      }
+      return object
+      },{})
+        var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + obj.vid + "&e=_sms_delivered"
+        Object.entries(custom_params).forEach(
+          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+        );
         console.log(url);
         axios.get(url).then(function (response) {
           console.log(response)
