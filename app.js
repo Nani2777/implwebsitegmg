@@ -72,37 +72,35 @@ app.post('/moslwebhook', function (req, res) {
         //console.log(data.status);
         //console.log(data.jobname);
         let div = data.jobname.split(',');
-        let obj = {};
+        let params = {};
         for (i = 0; i < div.length; i++) {
           let fin = div[i].split(':');
           console.log(fin[0], fin[1]);
-          obj[fin[0]] = fin[1];
+          params[fin[0]] = fin[1];
         }
-        console.log(obj);
-        let custom_params = Object.keys(d).reduce((object,key)=>{
-          if(key !== "comp_id" && key !== "vid"){
-          object[key] = d[key]
-      }
-      return object
-      },{})
-        var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + obj.vid + "&e=_sms_delivered"
+        var custom_params = Object.keys(params).reduce((object, key) => {
+          if (key != "comp_id" && key != "vid") {
+            object[key] = params[key]
+          }
+          return object
+        }, {});
+        var url = "http://evbk.gamooga.com/ev/?c=" + params.comp_id + "&v=" + params.vid + "&e=_sms_delivered"
         Object.entries(custom_params).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url);
         axios.get(url).then(function (response) {
-          console.log(response)
         }).catch(function (error) {
           console.log(error);
         });
       }
     }
   } catch{
-
+    console.log('Error in entries for the Pepipost req data', err);
+    res.writeHead(200);
+    res.end("ERROR");
   }
-  res.send({
-    "status": "Success"
-  });
+  res.end("OK");
 });
 app.post('/iflwebhook', function (req, res) {
   console.log('IFLI WEBHOOKS LOGS');
