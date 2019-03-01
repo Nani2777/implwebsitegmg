@@ -61,20 +61,28 @@ app.use(function(err, req, res, next) {
 module.exports = app;*/
 app.post('/moslwebhook', function (req, res) {
   console.log('MOSL logs');
-  try{
+  try {
     //console.log(req.body);
-    var data = req.body;
-    console.log(typeof(data));
-    if(typeof(data) == 'object'){
-      if(data.mobile == '918555880637' || data.mobile == '8555880637'){
-      //console.log(data.mobile);
-      console.log(req.body);
-      console.log(data.status);
-      console.log(data);
-      console.log(data.jobname);
+    let data = req.body;
+    console.log(typeof (data));
+    if (typeof (data) == 'object') {
+      if (data.mobile == '918555880637' || data.mobile == '8555880637') {
+        //console.log(data.mobile);
+        console.log(req.body);
+        //console.log(data.status);
+        //console.log(data.jobname);
+        let div = data.jobname.split(',');
+        console.log(div);
+        let obj = {};
+        for (i = 0; i < dif.length; i++) {
+          let fin = dif[i].split(':');
+          console.log(fin[0], fin[1]);
+          obj[fin[0]]=fin[1];
+        }
+        console.log(obj);
       }
     }
-  }catch{
+  } catch{
 
   }
   res.send({
@@ -188,40 +196,40 @@ app.post('/karvymailkootwebhook', function (req, res) {
   if (typeof (webhookData) == 'object') {
     console.log(webhookData);
     //webhookData.forEach(function (each) {
-      if (webhookData['event_type'] == "delivery_attempt") {
-        try {
-          var cmp_data = webhookData['click_tracking_id'];
-          var campaign_data = JSON.parse(cmp_data);
-          var vid = campaign_data.vid;
-          var comp_id = campaign_data.comp_id;
-          var camp_data = new Object(campaign_data.custom_params);
-          console.log(camp_data,campaign_data);
-          if (webhookData['status'] == 'success') {
-            var event = "_email_delivered";
-          }
-          else {
-            var event = "_email_bounced";
-          }
-          var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
-          if (_check_bounce == 'true') {
-            camp_data['bounce_type'] = webhookData['bounce_type']
-            camp_data['bounce_reason'] = webhookData['bounce_text']
-          }
-          var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
-          Object.entries(camp_data).forEach(
-            ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
-          );
-          axios.get(url).then(function (response) {
-            console.log(response)
-          }).catch(function (error) {
-            console.log(error);
-          });
-        } catch (err) {
-          console.log('Error in entries for the Pepipost req data', err);
-          res.writeHead(200);
-          res.end("ERROR");
+    if (webhookData['event_type'] == "delivery_attempt") {
+      try {
+        var cmp_data = webhookData['click_tracking_id'];
+        var campaign_data = JSON.parse(cmp_data);
+        var vid = campaign_data.vid;
+        var comp_id = campaign_data.comp_id;
+        var camp_data = new Object(campaign_data.custom_params);
+        console.log(camp_data, campaign_data);
+        if (webhookData['status'] == 'success') {
+          var event = "_email_delivered";
         }
+        else {
+          var event = "_email_bounced";
+        }
+        var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
+        if (_check_bounce == 'true') {
+          camp_data['bounce_type'] = webhookData['bounce_type']
+          camp_data['bounce_reason'] = webhookData['bounce_text']
+        }
+        var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
+        Object.entries(camp_data).forEach(
+          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+        );
+        axios.get(url).then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error);
+        });
+      } catch (err) {
+        console.log('Error in entries for the Pepipost req data', err);
+        res.writeHead(200);
+        res.end("ERROR");
       }
+    }
     //})
   }
   res.writeHead(200);
