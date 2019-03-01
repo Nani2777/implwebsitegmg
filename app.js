@@ -86,6 +86,12 @@ app.post('/moslwebhook', function (req, res) {
               url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
             }
           });
+        console.log(url);
+        axios.get(url).then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error);
+        });
       }
     }
   } catch{
