@@ -76,9 +76,16 @@ app.post('/moslwebhook', function (req, res) {
         for (i = 0; i < div.length; i++) {
           let fin = div[i].split(':');
           console.log(fin[0], fin[1]);
-          obj[fin[0]]=fin[1];
+          obj[fin[0]] = fin[1];
         }
         console.log(obj);
+        var url = "http://evbk.gamooga.com/ev/?c=" + obj.comp_id + "&v=" + obj.vid + "&e=_sms_delivered"
+        Object.entries(obj).forEach(
+          ([key, value]) => {
+            if (!obj.comp_id && !obj.vid) {
+              url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+            }
+          });
       }
     }
   } catch{
