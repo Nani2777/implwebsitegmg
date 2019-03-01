@@ -72,10 +72,9 @@ app.post('/moslwebhook', function (req, res) {
         //console.log(data.status);
         //console.log(data.jobname);
         let div = data.jobname.split(',');
-        console.log(div);
         let obj = {};
-        for (i = 0; i < dif.length; i++) {
-          let fin = dif[i].split(':');
+        for (i = 0; i < div.length; i++) {
+          let fin = div[i].split(':');
           console.log(fin[0], fin[1]);
           obj[fin[0]]=fin[1];
         }
