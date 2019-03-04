@@ -4,8 +4,17 @@ var cookieParser = require('cookie-parser');
 var nunjucks = require('nunjucks');
 var logger = require('morgan');
 var request = require('request');
-var axios  = require('axios');
+var axios = require('axios');
 var app = express();
+var Logger = require('./logger').Logger;
+var bodyParser = require('body-parser');
+
+
+app.use(function timeLog(req, res, next) {
+  // this is an example of how you would call our new logging system to log an info message
+  Logger.info("Test Message");
+  next();
+});
 
 nunjucks.configure('views', {
   autoescape: true,
@@ -22,6 +31,7 @@ app.set('view engine', 'nunjucks');
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(bodyParser.text());
 app.use(express.urlencoded({
   extended: false
 }));
@@ -59,7 +69,9 @@ app.post('/moslwebhook', function (req, res) {
 });
 app.post('/iflwebhook', function (req, res) {
   console.log('IFLI WEBHOOKS LOGS');
+  Logger.info('IFLI WEBHOOKS LOGS');
   console.log(req.body);
+  Logger.debug(JSON.stringify(req.body));
   //console.log(req.headers);
   res.writeHead(200);
   res.end("OK");
@@ -159,7 +171,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
   let webhookData = req.body;
   console.log(webhookData);
   if (webhookData.event_type == "delivery_attempt") {
-    console.log('Delivery event is done');
+    
   }
   res.writeHead(200);
   res.end("OK");
@@ -170,20 +182,61 @@ app.post('/stepwebhook', function (req, res) {
   console.log(req.body);
   console.log(req.query);
   console.log(req.params);
-  console.log("req", req);
+  console.log(req.headers);
+  //console.log("req", req);
   res.writeHead(200);
   res.end("OK");
 });
 
-app.get('/stepwebhook', function (req, res) {
-  console.log('step logs');
-  console.log(req.body);
-  console.log(req.query);
-  res.writeHead(200);
-  res.end("OK");
+app.get('/wooplrwebhook', function (req, res) {
+  try {
+    //console.log('Wooplr SMS');
+    Logger.info('Wooplr SMS');
+    var data = req.query;
+    if (typeof (data) == 'object') {
+      //console.log(typeof (data));
+      //console.log(req.query);
+      Logger.debug(JSON.stringify(req.query));
+      var cmp_data = data['extra'];
+      var campaign_data = JSON.parse(cmp_data);
+      var camp_data = new Object(campaign_data.cust_params);
+      var vid = campaign_data['vid'];
+      var comp_id = campaign_data['comp_id'];
+      var mobile = data['phoneNo'];
+      var status = data['status'];
+      var cause = data['cause'];
+      var error = data['errCode'];
+      var event = '_sms_delivered';
+      camp_data["mobile"] = mobile;
+      camp_data["status"] = status;
+      camp_data["cause"] = cause;
+      camp_data["error"] = error;
+      console.log(camp_data);
+      Logger.debug(camp_data);
+      try {
+        var url = "http://evbk.gamooga.com/ev/?c=107a3b41-1aa3-45c6-a324-f0399a2aa2af&v=" + vid + "&e=" + event
+        Object.entries(camp_data).forEach(
+          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+        );
+        console.log(url)
+        axios.get(url).then(function (response) {
+        }).catch(function (error) {
+          console.log(error);
+          Logger.error(error);
+        });
+      } catch (err) {
+        console.log('Error in Webhook from Gamooga Event API', err);
+        res.writeHead(200);
+        res.end("ERROR");
+      }
+    }
+  } catch (err) {
+    //console.log('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    Logger.error('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    res.writeHead(200);
+    res.end("ERROR");
+  }
 });
-
-
 
 app.get('/', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
