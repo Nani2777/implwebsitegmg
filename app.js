@@ -77,7 +77,8 @@ app.post('/moslwebhook', function (req, res) {
           }
           return object
         }, {});
-        var url = "http://js3in1.gamooga.com/ev/?c=" + params.comp_id + "&v=" + params.vid + "&e=_sms_delivered"
+        var Server  = (params.comp_id=="fcbe3928-6512-48a6-8cb5-c8c51e100539"?"js3in1.gamooga.com":"evbk.gamooga.com");
+        var url = "http://"+Server+"/ev/?c=" + params.comp_id + "&v=" + params.vid + "&e=_sms_delivered"
         Object.entries(custom_params).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
