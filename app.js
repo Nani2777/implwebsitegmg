@@ -60,22 +60,15 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;*/
 app.post('/moslwebhook', function (req, res) {
-  console.log('MOSL logs');
   try {
-    //console.log(req.body);
     let data = req.body;
     console.log(typeof (data));
     if (typeof (data) == 'object') {
-      if (data.mobile == '919494843730' || data.mobile == '9494843730') {
-        //console.log(data.mobile);
-        console.log(req.body);
-        //console.log(data.status);
-        //console.log(data.jobname);
+      if (data.jobname) {
         let div = data.jobname.split(',');
         let params = {};
         for (i = 0; i < div.length; i++) {
           let fin = div[i].split(':');
-          console.log(fin[0], fin[1]);
           params[fin[0]] = fin[1];
         }
         var custom_params = Object.keys(params).reduce((object, key) => {
@@ -84,7 +77,7 @@ app.post('/moslwebhook', function (req, res) {
           }
           return object
         }, {});
-        var url = "http://evbk.gamooga.com/ev/?c=" + params.comp_id + "&v=" + params.vid + "&e=_sms_delivered"
+        var url = "http://js3in1.gamooga.com/ev/?c=" + params.comp_id + "&v=" + params.vid + "&e=_sms_delivered"
         Object.entries(custom_params).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
