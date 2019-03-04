@@ -65,7 +65,7 @@ app.post('/moslwebhook', function (req, res) {
     console.log(data);
     console.log(typeof (data));
     if (typeof (data) == 'object') {
-      if (data.jobname && data.jobname !=="") {
+      if (data.jobname && data.jobname !=="null") {
         let div = data.jobname.split(',');
         let params = {};
         for (i = 0; i < div.length; i++) {
