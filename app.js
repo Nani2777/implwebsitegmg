@@ -62,9 +62,10 @@ module.exports = app;*/
 app.post('/moslwebhook', function (req, res) {
   try {
     let data = req.body;
+    console.log(data);
     console.log(typeof (data));
     if (typeof (data) == 'object') {
-      if (data.jobname) {
+      if (data.jobname && data.jobname !=="") {
         let div = data.jobname.split(',');
         let params = {};
         for (i = 0; i < div.length; i++) {
