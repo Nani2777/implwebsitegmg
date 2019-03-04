@@ -62,7 +62,6 @@ module.exports = app;*/
 app.post('/moslwebhook', function (req, res) {
   try {
     let data = req.body;
-    console.log(data);
     console.log(typeof (data));
     if (typeof (data) == 'object') {
       if (data.jobname && data.jobname !=="null") {
@@ -89,6 +88,9 @@ app.post('/moslwebhook', function (req, res) {
         }).catch(function (error) {
           console.log(error);
         });
+      }
+      else{
+        console.log("jobname was not paasing while sending sms");
       }
     }
   } catch{
