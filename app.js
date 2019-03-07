@@ -64,7 +64,7 @@ app.post('/moslwebhook', function (req, res) {
     let data = req.body;
     console.log(typeof (data));
     if (typeof (data) == 'object') {
-      if (data.jobname && data.jobname !=="null") {
+      if (data.jobname && data.jobname !== "null") {
         let div = data.jobname.split(',');
         let params = {};
         for (i = 0; i < div.length; i++) {
@@ -77,8 +77,8 @@ app.post('/moslwebhook', function (req, res) {
           }
           return object
         }, {});
-        var Server  = (params.comp_id=="fcbe3928-6512-48a6-8cb5-c8c51e100539"?"js3in1.gamooga.com":"evbk.gamooga.com");
-        var url = "http://"+Server+"/ev/?c=" + params.comp_id + "&v=" + params.vid + "&e=_sms_delivered"
+        var Server = (params.comp_id == "fcbe3928-6512-48a6-8cb5-c8c51e100539" ? "js3in1.gamooga.com" : "evbk.gamooga.com");
+        var url = "http://" + Server + "/ev/?c=" + params.comp_id + "&v=" + params.vid + "&e=_sms_delivered"
         Object.entries(custom_params).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
@@ -88,12 +88,11 @@ app.post('/moslwebhook', function (req, res) {
         }).catch(function (error) {
           console.log(error);
         });
-      }
-      else{
+      } else {
         console.log("jobname was not paasing while sending sms");
       }
     }
-  } catch{
+  } catch {
     console.log('Error in entries for MOSL req data', err);
     res.writeHead(200);
     res.end("ERROR");
@@ -101,18 +100,41 @@ app.post('/moslwebhook', function (req, res) {
   res.end("OK");
 });
 app.post('/iflwebhook', function (req, res) {
-  console.log('IFLI WEBHOOKS LOGS');
-  Logger.info('IFLI WEBHOOKS LOGS');
   console.log(req.body);
-  Logger.debug(JSON.stringify(req.body));
-  //console.log(req.headers);
+  let cb_data = req.body;
+  cb_data.forEach(function (each) {
+    if (each['event'] == 'delivered') {
+      let comp_id = "107a3b41-1aa3-45c6-a324-f0399a2aa2af";
+      let vid = each.vid;
+      let cp_type = each.cp_type;
+      let cp_id = each.cp_id;
+      let tpid = each.tpid;
+      let custom_args = {
+        "cp_type": cp_type,
+        "cp_id": cp_id,
+        'tpid': tpid
+      }
+      let event = "_email_" + each['event'];
+      let url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
+      Object.entries(custom_args).forEach(
+        ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+      );
+      axios.get(url).then(function (response) {
+        console.log(response)
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  })
+
   res.writeHead(200);
   res.end("OK");
 });
+/*
 app.post('/karvywebhook', function (req, res) {
   try {
     var webhookData = req.body;
-    console.log(webhookData);
+    //console.log(webhookData);
     if (typeof (webhookData) == 'object') {
       webhookData.forEach(function (each) {
         if (each['EVENT'] == "sent" || each['EVENT'] == "bounced" || each['EVENT'] == "unsubscribed") {
@@ -153,7 +175,7 @@ app.post('/karvywebhook', function (req, res) {
     res.end("ERROR");
   }
 });
-
+*/
 app.get('/karvywebhook', function (req, res) {
   try {
     console.log('karvy SMS');
@@ -205,7 +227,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
   let webhookData = req.body;
   console.log(webhookData);
   if (webhookData.event_type == "delivery_attempt") {
-    
+
   }
   res.writeHead(200);
   res.end("OK");
@@ -253,8 +275,7 @@ app.get('/wooplrwebhook', function (req, res) {
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url)
-        axios.get(url).then(function (response) {
-        }).catch(function (error) {
+        axios.get(url).then(function (response) {}).catch(function (error) {
           console.log(error);
           Logger.error(error);
         });
