@@ -240,18 +240,22 @@ app.post('/karvymailkootwebhook', function (req, res) {
         var vid = campaign_data.vid;
         var comp_id = campaign_data.comp_id;
         var camp_data = new Object(campaign_data.custom_params);
-        console.log(camp_data, campaign_data);
-        //Log.L(Log.I, 'Karvy Mailkoot logs', camp_data,campaign_data);
+        var event;
         if (webhookData['status'] == 'success') {
-          var event = "_email_delivered";
+          event = "_email_delivered";
         }
         else {
-          var event = "_email_bounced";
+          event = "_email_bounced";
+        }
+        var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
+        if (_check_bounce == 'true') {
+          camp_data['bounce_reason'] = webhookData['message']
         }
         var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
         Object.entries(camp_data).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
+        console.log(url);
         axios.get(url).then(function (response) {
           console.log(response.statusText)
         }).catch(function (error) {
