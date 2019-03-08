@@ -109,10 +109,14 @@ app.post('/iflwebhook', function (req, res) {
       let cp_type = each.cp_type;
       let cp_id = each.cp_id;
       let tpid = each.tpid;
+      let mail_type = each.mail_type;
+      let email = each.emailid;
       let custom_args = {
         "cp_type": cp_type,
         "cp_id": cp_id,
-        'tpid': tpid
+        "tpid": tpid,
+        "mail_type":mail_type,
+        "email":email
       }
       let event = "_email_" + each['event'];
       let url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
@@ -224,10 +228,47 @@ app.get('/karvywebhook', function (req, res) {
 
 app.post('/karvymailkootwebhook', function (req, res) {
   console.log('Karvy Mailkoot logs');
+  //Log.L(Log.I, 'Karvy Mailkoot logs');
   let webhookData = req.body;
-  console.log(webhookData);
-  if (webhookData.event_type == "delivery_attempt") {
-
+  if (typeof (webhookData) == 'object') {
+    console.log(webhookData);
+    //Log.L(Log.I, 'Karvy Mailkoot logs', webhookData.status);
+    if (webhookData['event_type'] == "delivery_attempt") {
+      try {
+        var cmp_data = webhookData['click_tracking_id'];
+        var campaign_data = JSON.parse(cmp_data);
+        var vid = campaign_data.vid;
+        var comp_id = campaign_data.comp_id;
+        var camp_data = new Object(campaign_data.custom_params);
+        console.log(camp_data, campaign_data);
+        //Log.L(Log.I, 'Karvy Mailkoot logs', camp_data,campaign_data);
+        if (webhookData['status'] == 'success') {
+          var event = "_email_delivered";
+        }
+        else {
+          var event = "_email_bounced";
+        }
+        var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
+        if (_check_bounce == 'true') {
+          camp_data['bounce_type'] = webhookData['bounce_type']
+          camp_data['bounce_reason'] = webhookData['bounce_text']
+        }
+        var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
+        Object.entries(camp_data).forEach(
+          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+        );
+        axios.get(url).then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error);
+        });
+      } catch (err) {
+        console.log('Error in entries for the Mailkoot req data', err);
+        //Log.L(Log.E, 'Error in entries for the Mailkoot req data', err);
+        res.writeHead(200);
+        res.end("ERROR");
+      }
+    }
   }
   res.writeHead(200);
   res.end("OK");
