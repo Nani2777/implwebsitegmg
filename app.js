@@ -227,8 +227,6 @@ app.get('/karvywebhook', function (req, res) {
 });
 
 app.post('/karvymailkootwebhook', function (req, res) {
-  console.log('Karvy Mailkoot logs');
-  //Log.L(Log.I, 'Karvy Mailkoot logs');
   let webhookData = req.body;
   if (typeof (webhookData) == 'object') {
     console.log(webhookData);
@@ -246,10 +244,6 @@ app.post('/karvymailkootwebhook', function (req, res) {
         }
         else {
           event = "_email_bounced";
-        }
-        var _check_bounce = (event == '_email_bounced' ? 'true' : 'false');
-        if (_check_bounce == 'true') {
-          camp_data['bounce_reason'] = webhookData['message']
         }
         var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
         Object.entries(camp_data).forEach(
