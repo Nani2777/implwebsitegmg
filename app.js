@@ -105,7 +105,7 @@ app.post('/iflwebhook', function (req, res) {
   try {
     cb_data.forEach(function (each) {
       if (each['event'] == 'delivered' || each['event'] == 'bounce' || each['event'] == 'dropped' || each['event'] == "unsubscribe") {
-        let comp_id = "107a3b41-1aa3-45c6-a324-f0399a2aa2af";
+        let comp_id = each.comp_id;
         let vid = each.vid;
         let cp_type = each.cp_type;
         let cp_id = each.cp_id;
@@ -246,8 +246,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
   let webhookData = req.body;
   if (typeof (webhookData) == 'object') {
     console.log(webhookData);
-    //Log.L(Log.I, 'Karvy Mailkoot logs', webhookData.status);
-    if (webhookData['event_type'] == "delivery_attempt") {
+    if (webhookData['event_type'] == "delivery_attempt" || webhookData['event_type'] == "bounce_all") {
       try {
         var cmp_data = webhookData['click_tracking_id'];
         var campaign_data = JSON.parse(cmp_data);
@@ -257,8 +256,10 @@ app.post('/karvymailkootwebhook', function (req, res) {
         var event;
         if (webhookData['status'] == 'success') {
           event = "_email_delivered";
-        } else {
-          event = "_email_bounced";
+        } 
+        if (webhookData['event_type'] == "bounce_all"){
+          event = "_email_bounce"
+          camp_data["bounce_text"] = webhookData.bounce_text;
         }
         var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
         Object.entries(camp_data).forEach(
