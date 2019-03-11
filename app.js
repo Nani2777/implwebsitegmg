@@ -136,6 +136,7 @@ app.post('/iflwebhook', function (req, res) {
         Object.entries(custom_args).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
+        console.log(url);
         axios.get(url).then(function (response) {
           console.log("Successfull to send data to gamooga");
           console.log(response.statusText);
