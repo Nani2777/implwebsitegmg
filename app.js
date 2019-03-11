@@ -102,35 +102,53 @@ app.post('/moslwebhook', function (req, res) {
 app.post('/iflwebhook', function (req, res) {
   console.log(req.body);
   let cb_data = req.body;
-  cb_data.forEach(function (each) {
-    if (each['event'] == 'delivered') {
-      let comp_id = "107a3b41-1aa3-45c6-a324-f0399a2aa2af";
-      let vid = each.vid;
-      let cp_type = each.cp_type;
-      let cp_id = each.cp_id;
-      let tpid = each.tpid;
-      let mail_type = each.mail_type;
-      let email = each.emailid;
-      let custom_args = {
-        "cp_type": cp_type,
-        "cp_id": cp_id,
-        "tpid": tpid,
-        "mail_type":mail_type,
-        "email":email
-      }
-      let event = "_email_" + each['event'];
-      let url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
-      Object.entries(custom_args).forEach(
-        ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
-      );
-      axios.get(url).then(function (response) {
-        console.log(response)
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }
-  })
+  try {
+    cb_data.forEach(function (each) {
+      if (each['event'] == 'delivered' || each['event'] == 'bounce' || each['event'] == 'dropped' || each['event'] == "unsubscribe") {
+        let comp_id = "107a3b41-1aa3-45c6-a324-f0399a2aa2af";
+        let vid = each.vid;
+        let cp_type = each.cp_type;
+        let cp_id = each.cp_id;
+        let tpid = each.tpid;
+        let mail_type = each.mail_type;
+        let email = each.emailid;
+        var reason;
+        var bounce_category;
+        var type;
+        let custom_args = {
+          "cp_type": cp_type,
+          "cp_id": cp_id,
+          "tpid": tpid,
+          "mail_type": mail_type,
+          "email": email
+        }
+        let event = "_email_" + each['event'];
+        if (event == "_email_dropped" || event == "_email_unsubscribe") {
+          reason = each.reason;
+        }
+        if (event == "_email_bounce") {
+          reason = each.reason;
+          bounce_category = each.bounce_category;
+          type = each.type;
+        }
 
+        let url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
+        Object.entries(custom_args).forEach(
+          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+        );
+        axios.get(url).then(function (response) {
+          console.log("Successfull to send data to gamooga");
+          console.log(response.statusText);
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+    })
+  } catch (e) {
+    console.log("Error in incoming data from value first", e);
+    res.writeHead(200);
+    res.end("ERROR");
+  }
   res.writeHead(200);
   res.end("OK");
 });
@@ -241,8 +259,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
         var event;
         if (webhookData['status'] == 'success') {
           event = "_email_delivered";
-        }
-        else {
+        } else {
           event = "_email_bounced";
         }
         var url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
