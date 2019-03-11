@@ -112,9 +112,6 @@ app.post('/iflwebhook', function (req, res) {
         let tpid = each.tpid;
         let mail_type = each.mail_type;
         let email = each.emailid;
-        var reason;
-        var bounce_category;
-        var type;
         let custom_args = {
           "cp_type": cp_type,
           "cp_id": cp_id,
@@ -124,12 +121,12 @@ app.post('/iflwebhook', function (req, res) {
         }
         let event = "_email_" + each['event'];
         if (event == "_email_dropped" || event == "_email_unsubscribe") {
-          reason = each.reason;
+          custom_args['reason'] = each.reason;
         }
         if (event == "_email_bounce") {
-          reason = each.reason;
-          bounce_category = each.bounce_category;
-          type = each.type;
+          custom_args['reason'] = each.reason;
+          custom_args['bounce_category'] = each.bounce_category;
+          custom_args['type'] = each.type;
         }
 
         let url = "http://evbk.gamooga.com/ev/?c=" + comp_id + "&v=" + vid + "&e=" + event
