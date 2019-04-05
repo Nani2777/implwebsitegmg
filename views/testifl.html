@@ -603,7 +603,7 @@
                         
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px; font-family: Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-style: normal; font-weight: normal; line-height: 150%; text-align: center;">
                         
-                            <h1 style="text-align: center;"><span style="font-size:15px"><span style="font-family:arial,helvetica neue,helvetica,sans-serif">Dear {{Insert.Name}},<br>
+                            <h1 style="text-align: center;"><span style="font-size:15px"><span style="font-family:arial,helvetica neue,helvetica,sans-serif">Dear <span id="name12"> </span>,<br>
 <br>
 It is a matter of great pride for us at IndiaFirst Life<br>
 to be recognized in top 20 <strong><span style="color:#FF0000">“Great Places To Work”</span></strong><br>
@@ -682,4 +682,20 @@ Your Management Team</span></span></h1>
             </table>
         </center>
     </body>
+    <script>
+  var url_search=location.search;
+  var search=location.search.replace("?",'');
+  var y=search.split('&');
+  var dict={};
+  for(var i=0;i<y.length;i++)
+  {
+    var s=y[i].split('=');
+    dict[s[0]]=s[1];
+  }
+var firstname=dict['firstname'];
+  var secondname=dict['secondname'];
+console.log(firstname,secondname);
+document.getElementById("name12").innerHTML =
+firstname +' '+ secondname;
+    </script>
 </html>
