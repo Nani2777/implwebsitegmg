@@ -695,15 +695,19 @@ Your Management Team</span></span></h1>
   if(dict['firstname'] != undefined){
 	  var firstname=dict['firstname'];
   }
-  if(dict['lastname'] != undefined){
-	  var lastname=dict['lastname'];
+  else{
+	  var firstname = '';
   }
-  if(firstname == undefined && lastname == undefined){
-	  console.log('Firstname & Lastname are empty');
+  if(dict['lastname'] != undefined){
+	  var lastname=' '+dict['lastname'];
   }
   else{
-console.log(firstname,lastname);
-document.getElementById("name12").innerHTML =' '+ firstname +' '+ lastname;
-}
-    </script>
+	  var lastname = '';
+  }
+  if(firstname != undefined && lastname != undefined){
+	  console.log('Firstname & Lastname are empty');
+	  console.log(firstname,lastname);
+	  document.getElementById("name12").innerHTML =' '+ firstname + lastname;
+  }
+  </script>
 </html>
