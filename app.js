@@ -356,7 +356,7 @@ app.get('/seniority', function (req, res) {
   //res.send('Coming from home directory'); 
   res.render('index.html');
 });
-app.get('/test_iflpage', function (req, res) {
+app.get('/testiflpage', function (req, res) {
   //res.send('Coming from home directory'); 
   res.render('testifl.html');
 });
