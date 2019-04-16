@@ -281,7 +281,7 @@ app.post('/karvymailkootwebhook', function (req, res) {
 });
 
 app.post('/stepwebhook', function (req, res) {
-  Logger.info('step SMS');
+  Logger.info('step Email logs');
   console.log('step logs');
   console.log(req.body);
   console.log(req.query);
