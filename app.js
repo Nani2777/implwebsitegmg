@@ -296,6 +296,22 @@ app.post('/stepwebhook', function (req, res) {
   res.end("OK");
 });
 
+app.post('/stepwebhooksms', function (req, res) {
+  Logger.info('step SMS logs');
+  console.log('step logs');
+  console.log(req.body);
+  console.log(req.query);
+  console.log(req.params);
+  console.log(req.headers);
+  Logger.info(req.body);
+  Logger.info(req.query);
+  Logger.info(req.params);
+  Logger.info(req.headers);
+  //console.log("req", req);
+  res.writeHead(200);
+  res.end("OK");
+});
+
 app.get('/wooplrwebhook', function (req, res) {
   try {
     //console.log('Wooplr SMS');
