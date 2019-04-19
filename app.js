@@ -297,7 +297,7 @@ app.post('/stepwebhook', function (req, res) {
 });
 
 app.post('/stepwebhooksms', function (req, res) {
-  //Logger.info('step SMS logs');
+  Logger.info('step SMS logs');
   console.log('step logs');
   console.log(req.body);
   console.log(req.query);
