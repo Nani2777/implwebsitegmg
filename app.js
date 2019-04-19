@@ -307,7 +307,7 @@ app.post('/stepwebhooksms', function (req, res) {
   if (typeof (webhookData) == 'object') {
     //console.log(webhookData);
     if(webhookData['Status'] == 'sent'){
-      console.log('SMS_delivered');
+      console.log('sms_delivered');
     }
   }
   //console.log("req", req);
