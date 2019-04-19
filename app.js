@@ -301,8 +301,8 @@ app.post('/stepwebhooksms', function (req, res) {
   console.log('step logs');
   console.log(req.body);
   console.log(req.headers);
-  Logger.info(req.body);
-  Logger.info(req.headers);
+  Logger.info(JSON.stringify(req.body));
+  Logger.info(JSON.stringify(req.headers));
   //console.log("req", req);
   res.writeHead(200);
   res.end("OK");
