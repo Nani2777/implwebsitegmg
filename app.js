@@ -297,16 +297,16 @@ app.post('/stepwebhook', function (req, res) {
 });
 
 app.post('/stepwebhooksms', function (req, res) {
-  Logger.info('step SMS logs');
+  //Logger.info('step SMS logs');
   console.log('step logs');
   console.log(req.body);
   console.log(req.query);
   console.log(req.params);
   console.log(req.headers);
-  Logger.info(req.body);
-  Logger.info(req.query);
-  Logger.info(req.params);
-  Logger.info(req.headers);
+  //Logger.info(req.body);
+  //Logger.info(req.query);
+  //Logger.info(req.params);
+  //Logger.info(req.headers);
   //console.log("req", req);
   res.writeHead(200);
   res.end("OK");
