@@ -317,9 +317,26 @@ app.post('/stepwebhooksms', function (req, res) {
   console.log('step logs');
   console.log(req.query);
   var qury = req.query;
-  var camp_id = qury['campaignID'];
-  var temp_id = qury['templateID'];
-  console.log(camp_id,temp_id);
+  var cp_id = qury['cp_id'];
+  var tpid = qury['tpid'];
+  var cp_type = query['cp_type'];
+  var tp = query['tp'];
+  var visid = query['visid'];
+  var event = 'test_apl';
+  var camp_data = new Object();
+  camp_data["cp_id"] = cp_id;
+  camp_data["tpid"] = tpid;
+  camp_data["cp_type"] = cp_type;
+  camp_data["tp"] = tp;
+  var url = "http://evbk.gamooga.com/ev/?c=dcaf55cc-b36d-4d0e-9003-f93187c04886&v=" + visid + "&e=" + event
+  Object.entries(camp_data).forEach(
+    ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+  );
+  console.log(url)
+  axios.get(url).then(function (response) {}).catch(function (error) {
+    console.log(error);
+    Logger.error(error);
+  });
   Logger.info(camp_id,temp_id);
   console.log(req.body);
   console.log(req.headers);
