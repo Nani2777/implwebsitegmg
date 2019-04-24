@@ -315,10 +315,10 @@ app.get('/stepwebhook', function (req, res) {
 app.post('/stepwebhooksms', function (req, res) {
   Logger.info('step SMS logs');
   console.log('step logs');
-  console.log(res);
+  console.log(req.query);
   console.log(req.body);
   console.log(req.headers);
-  Logger.info(res);
+  Logger.info(req.query);
   Logger.info(JSON.stringify(req.body));
   Logger.info(JSON.stringify(req.headers));
   let webhookData = req.body;
