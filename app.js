@@ -328,6 +328,7 @@ app.post('/stepwebhooksms', function (req, res) {
   camp_data["tpid"] = tpid;
   camp_data["cp_type"] = cp_type;
   camp_data["tp"] = tp;
+  Logger.info(cp_id,tpid,tp,cp_type);
   var url = "http://evbk.gamooga.com/ev/?c=dcaf55cc-b36d-4d0e-9003-f93187c04886&v=" + visid + "&e=" + event
   Object.entries(camp_data).forEach(
     ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
@@ -337,7 +338,7 @@ app.post('/stepwebhooksms', function (req, res) {
     console.log(error);
     Logger.error(error);
   });
-  Logger.info(camp_id,temp_id);
+  
   console.log(req.body);
   console.log(req.headers);
   Logger.info(req.query);
