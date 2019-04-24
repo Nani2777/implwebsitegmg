@@ -316,6 +316,11 @@ app.post('/stepwebhooksms', function (req, res) {
   Logger.info('step SMS logs');
   console.log('step logs');
   console.log(req.query);
+  var qury = req.query;
+  var camp_id = qury['campaignID'];
+  var temp_id = qury['templateID'];
+  console.log(camp_id,temp_id);
+  Logger.info(camp_id,temp_id);
   console.log(req.body);
   console.log(req.headers);
   Logger.info(req.query);
