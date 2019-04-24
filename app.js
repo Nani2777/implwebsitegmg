@@ -319,9 +319,9 @@ app.post('/stepwebhooksms', function (req, res) {
   var qury = req.query;
   var cp_id = qury['cp_id'];
   var tpid = qury['tpid'];
-  var cp_type = query['cp_type'];
-  var tp = query['tp'];
-  var visid = query['visid'];
+  var cp_type = qury['cp_type'];
+  var tp = qury['tp'];
+  var visid = qury['visid'];
   var event = 'test_apl';
   var camp_data = new Object();
   camp_data["cp_id"] = cp_id;
