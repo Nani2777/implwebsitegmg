@@ -328,15 +328,16 @@ app.post('/stepwebhooksms', function (req, res) {
   camp_data["tpid"] = tpid;
   camp_data["cp_type"] = cp_type;
   camp_data["tp"] = tp;*/
+  var event = 'test_apl';
   var custom_params = Object.keys(qury).reduce((object, key) => {
     if (key != "comp_id" && key != "vid") {
-      object[key] = params[key]
+      object[key] = qury[key]
     }
     return object
   }, {});
-  Logger.info(cp_id,tpid,tp,cp_type);
-  var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event
-  Object.entries(camp_data).forEach(
+  Logger.info(custom_params);
+  var url = "http://evbk.gamooga.com/ev/?c="+ qury.comp_id +"&v=" + qury.vid + "&e=" + event
+  Object.entries(custom_params).forEach(
     ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
   );
   console.log(url)
