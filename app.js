@@ -315,8 +315,10 @@ app.get('/stepwebhook', function (req, res) {
 app.post('/stepwebhooksms', function (req, res) {
   try {
     let webhookData = req.body;
-    if (typeof (webhookData) == 'object') {      
+    if (typeof (webhookData) == 'object') {
+      Logger.info('step SMS logs');
       console.log('step logs');
+      console.log(req.query);
       var qury = req.query;
       var event = '_sms_' + (webhookData['Status'] == 'sent' ? 'delivered' : 'failed')
       var custom_params = Object.keys(qury).reduce((object, key) => {
@@ -327,27 +329,27 @@ app.post('/stepwebhooksms', function (req, res) {
       }, {});
       custom_params['status'] = webhookData.Status;
       custom_params['mobile'] = webhookData.To;
-      //Logger.info(custom_params);
+      Logger.info(custom_params);
       try {
         var url = "http://evbk.gamooga.com/ev/?c=" + qury.comp_id + "&v=" + qury.vid + "&e=" + event
         Object.entries(custom_params).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
-        //console.log(url)
+        console.log(url)
         axios.get(url).then(function (response) {}).catch(function (error) {
           console.log(error);
-          //Logger.error(error);
+          Logger.error(error);
         });
       } catch (err) {
         console.log('Error in Webhook from Gamooga Event API', err);
         res.writeHead(200);
         res.end("ERROR");
       }
-      /*console.log(req.body);
+      console.log(req.body);
       console.log(req.headers);
       Logger.info(req.query);
       Logger.info(JSON.stringify(req.body));
-      Logger.info(JSON.stringify(req.headers));*/
+      Logger.info(JSON.stringify(req.headers));
       res.writeHead(200);
     }
   } catch (err) {
