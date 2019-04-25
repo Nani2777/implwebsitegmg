@@ -336,7 +336,9 @@ app.post('/stepwebhooksms', function (req, res) {
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
         );
         console.log(url)
-        axios.get(url).then(function (response) {}).catch(function (error) {
+        axios.get(url).then(function (response) {
+          console.log('done');
+        }).catch(function (error) {
           console.log(error);
           //Logger.error(error);
         });
@@ -350,7 +352,6 @@ app.post('/stepwebhooksms', function (req, res) {
       //Logger.info(req.query);
       //Logger.info(JSON.stringify(req.body));
       //Logger.info(JSON.stringify(req.headers));
-      res.writeHead(200);
     }
   } catch (err) {
     //Logger.error('Wooplr Error in Webhook from Gupshups object \n%s', err);
