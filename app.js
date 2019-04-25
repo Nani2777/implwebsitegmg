@@ -246,15 +246,15 @@ app.post('/karvymailkootwebhook', function (req, res) {
   let webhookData = req.body;
   if (typeof (webhookData) == 'object') {
     console.log(webhookData);
-    if ((webhookData['event_type'] == "delivery_attempt" && webhookData["status"]=="success") || webhookData['event_type'] == "bounce_all") {
+    if ((webhookData['event_type'] == "delivery_attempt" && webhookData["status"] == "success") || webhookData['event_type'] == "bounce_all") {
       try {
         var cmp_data = webhookData['click_tracking_id'];
         var campaign_data = JSON.parse(cmp_data);
         var vid = campaign_data.vid;
         var comp_id = campaign_data.comp_id;
         var camp_data = new Object(campaign_data.custom_params);
-        var event = "_email_delivered"; 
-        if (webhookData['event_type'] == "bounce_all"){
+        var event = "_email_delivered";
+        if (webhookData['event_type'] == "bounce_all") {
           event = "_email_bounce"
           camp_data["bounce_text"] = webhookData.bounce_text;
         }
@@ -313,53 +313,49 @@ app.get('/stepwebhook', function (req, res) {
 });
 
 app.post('/stepwebhooksms', function (req, res) {
-  Logger.info('step SMS logs');
-  console.log('step logs');
-  console.log(req.query);
-  var qury = req.query;
-  /*var cp_id = qury['cp_id'];
-  var tpid = qury['tpid'];
-  var cp_type = qury['cp_type'];
-  var tp = qury['tp'];
-  var visid = qury['visid'];
-  var event = 'test_apl';
-  var camp_data = new Object();
-  camp_data["cp_id"] = cp_id;
-  camp_data["tpid"] = tpid;
-  camp_data["cp_type"] = cp_type;
-  camp_data["tp"] = tp;*/
-  var event = 'test_apl';
-  var custom_params = Object.keys(qury).reduce((object, key) => {
-    if (key != "comp_id" && key != "vid") {
-      object[key] = qury[key]
+  try {
+    let webhookData = req.body;
+    if (typeof (webhookData) == 'object') {
+      Logger.info('step SMS logs');
+      console.log('step logs');
+      console.log(req.query);
+      var qury = req.query;
+      var event = '_sms_' + (webhookData['Status'] == 'sent' ? 'delivered' : 'failed')
+      var custom_params = Object.keys(qury).reduce((object, key) => {
+        if (key != "comp_id" && key != "vid") {
+          object[key] = qury[key]
+        }
+        return object
+      }, {});
+      Logger.info(custom_params);
+      try {
+        var url = "http://evbk.gamooga.com/ev/?c=" + qury.comp_id + "&v=" + qury.vid + "&e=" + event
+        Object.entries(custom_params).forEach(
+          ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+        );
+        console.log(url)
+        axios.get(url).then(function (response) {}).catch(function (error) {
+          console.log(error);
+          Logger.error(error);
+        });
+      } catch (err) {
+        console.log('Error in Webhook from Gamooga Event API', err);
+        res.writeHead(200);
+        res.end("ERROR");
+      }
+      console.log(req.body);
+      console.log(req.headers);
+      Logger.info(req.query);
+      Logger.info(JSON.stringify(req.body));
+      Logger.info(JSON.stringify(req.headers));
+      res.writeHead(200);
     }
-    return object
-  }, {});
-  Logger.info(custom_params);
-  var url = "http://evbk.gamooga.com/ev/?c="+ qury.comp_id +"&v=" + qury.vid + "&e=" + event
-  Object.entries(custom_params).forEach(
-    ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
-  );
-  console.log(url)
-  axios.get(url).then(function (response) {}).catch(function (error) {
-    console.log(error);
-    Logger.error(error);
-  });  
-  console.log(req.body);
-  console.log(req.headers);
-  Logger.info(req.query);
-  Logger.info(JSON.stringify(req.body));
-  Logger.info(JSON.stringify(req.headers));
-  let webhookData = req.body;
-  if (typeof (webhookData) == 'object') {
-    //console.log(webhookData);
-    if(webhookData['Status'] == 'sent'){
-      console.log('sms_delivered');
-    }
+  } catch (err) {
+    Logger.error('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    res.writeHead(200);
+    res.end("ERROR");
   }
-  //console.log("req", req);
   res.writeHead(200);
-  res.end("OK");
 });
 
 app.get('/wooplrwebhook', function (req, res) {
@@ -440,16 +436,16 @@ app.get('/path2/', function (req, res) {
   res.render('home_page.html');
 });
 
-app.get('/samplehtmljson',function(req,res){
-	var h = `<tr><td style="width:100%; font-size:0px;  text-align:left;"><h3>You May Also Like</h3></td></tr><tr><td width="80%"><table align="center"><tr><td width="25%"><a style="border:none; text-decoration:none; display: block;" href=http://www.nykaa.com/vega-lip-filler/p/3843 target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src=https://adn-static1.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/e/v/ev-13.jpg align="top"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 90.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Vega Lip Filler</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/l-a-girl-shady-slim-brow-pencil/p/81921" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/l/a/lag_shady_slim_brow_gb357_brunette_1.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 625.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">L.A Girl Shady Slim Brow Pencil</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/ocean-professional-foundation-brush/p/155271" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/N/Y/NYKONPL000010.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs.180.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Ocean Professional Brush(1Pc)</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/ocean-professional-contour-brush/p/155272" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/N/Y/NYKONPL000011.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 180.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Ocean Professional Contour Brush</div></td></tr></table></td></tr>`
-	res.send({"html":h});
-	
-})
-app.get('/samplehtml',function(req,res){
-	var h = `<tr><td style="width:100%; font-size:0px;  text-align:left;"><h3>You May Also Like</h3></td></tr><tr><td width="80%"><table align="center"><tr><td width="25%"><a style="border:none; text-decoration:none; display: block;" href=http://www.nykaa.com/vega-lip-filler/p/3843 target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src=https://adn-static1.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/e/v/ev-13.jpg align="top"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 90.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Vega Lip Filler</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/l-a-girl-shady-slim-brow-pencil/p/81921" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/l/a/lag_shady_slim_brow_gb357_brunette_1.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 625.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">L.A Girl Shady Slim Brow Pencil</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/ocean-professional-foundation-brush/p/155271" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/N/Y/NYKONPL000010.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs.180.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Ocean Professional Brush(1Pc)</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/ocean-professional-contour-brush/p/155272" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/N/Y/NYKONPL000011.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 180.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Ocean Professional Contour Brush</div></td></tr></table></td></tr>`
-	res.send(h);
-	
-})
-app.listen(app.get('port'), function () {
+app.get('/samplehtmljson', function (req, res) {
+  var h = `<tr><td style="width:100%; font-size:0px;  text-align:left;"><h3>You May Also Like</h3></td></tr><tr><td width="80%"><table align="center"><tr><td width="25%"><a style="border:none; text-decoration:none; display: block;" href=http://www.nykaa.com/vega-lip-filler/p/3843 target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src=https://adn-static1.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/e/v/ev-13.jpg align="top"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 90.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Vega Lip Filler</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/l-a-girl-shady-slim-brow-pencil/p/81921" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/l/a/lag_shady_slim_brow_gb357_brunette_1.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 625.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">L.A Girl Shady Slim Brow Pencil</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/ocean-professional-foundation-brush/p/155271" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/N/Y/NYKONPL000010.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs.180.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Ocean Professional Brush(1Pc)</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/ocean-professional-contour-brush/p/155272" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/N/Y/NYKONPL000011.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 180.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Ocean Professional Contour Brush</div></td></tr></table></td></tr>`
+  res.send({
+    "html": h
+  });
+
+}) app.get('/samplehtml', function (req, res) {
+  var h = `<tr><td style="width:100%; font-size:0px;  text-align:left;"><h3>You May Also Like</h3></td></tr><tr><td width="80%"><table align="center"><tr><td width="25%"><a style="border:none; text-decoration:none; display: block;" href=http://www.nykaa.com/vega-lip-filler/p/3843 target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src=https://adn-static1.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/e/v/ev-13.jpg align="top"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 90.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Vega Lip Filler</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/l-a-girl-shady-slim-brow-pencil/p/81921" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/l/a/lag_shady_slim_brow_gb357_brunette_1.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 625.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">L.A Girl Shady Slim Brow Pencil</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/ocean-professional-foundation-brush/p/155271" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/N/Y/NYKONPL000010.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs.180.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Ocean Professional Brush(1Pc)</div></td><td width="25%"><a style="border:none; text-decoration:none; display: block;" href="http://www.nykaa.com/ocean-professional-contour-brush/p/155272" target="_blank"><img style="border:none; margin: 3px ; padding:0 0 0 0;" src="https://adn-static3.nykaa.com/media/catalog/product/tr:h-220,w-150,cm-pad_resize/N/Y/NYKONPL000011.jpg"></a><div style="color:#fc2779;font-family: Arial;" align="center">Rs. 180.0</div><br /><div style="height: 100px;width: 120px;color: #333333;text-overflow-ellipsis: 1">Ocean Professional Contour Brush</div></td></tr></table></td></tr>`
+  res.send(h);
+
+}) app.listen(app.get('port'), function () {
   console.log('server started');
 });
