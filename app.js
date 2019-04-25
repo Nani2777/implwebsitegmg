@@ -317,7 +317,7 @@ app.post('/stepwebhooksms', function (req, res) {
   console.log('step logs');
   console.log(req.query);
   var qury = req.query;
-  var cp_id = qury['cp_id'];
+  /*var cp_id = qury['cp_id'];
   var tpid = qury['tpid'];
   var cp_type = qury['cp_type'];
   var tp = qury['tp'];
@@ -327,9 +327,15 @@ app.post('/stepwebhooksms', function (req, res) {
   camp_data["cp_id"] = cp_id;
   camp_data["tpid"] = tpid;
   camp_data["cp_type"] = cp_type;
-  camp_data["tp"] = tp;
+  camp_data["tp"] = tp;*/
+  var custom_params = Object.keys(qury).reduce((object, key) => {
+    if (key != "comp_id" && key != "vid") {
+      object[key] = params[key]
+    }
+    return object
+  }, {});
   Logger.info(cp_id,tpid,tp,cp_type);
-  var url = "http://evbk.gamooga.com/ev/?c=dcaf55cc-b36d-4d0e-9003-f93187c04886&v=" + visid + "&e=" + event
+  var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event
   Object.entries(camp_data).forEach(
     ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
   );
@@ -337,8 +343,7 @@ app.post('/stepwebhooksms', function (req, res) {
   axios.get(url).then(function (response) {}).catch(function (error) {
     console.log(error);
     Logger.error(error);
-  });
-  
+  });  
   console.log(req.body);
   console.log(req.headers);
   Logger.info(req.query);
