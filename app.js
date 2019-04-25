@@ -316,8 +316,8 @@ app.post('/stepwebhooksms', function (req, res) {
   try {
     let webhookData = req.body;
     if (typeof (webhookData) == 'object') {
-      Logger.info('step SMS logs');
-      console.log('step logs');
+      //Logger.info('step SMS logs');
+      //console.log('step logs');
       console.log(req.query);
       var qury = req.query;
       var event = '_sms_' + (webhookData['Status'] == 'sent' ? 'delivered' : 'failed')
@@ -329,7 +329,7 @@ app.post('/stepwebhooksms', function (req, res) {
       }, {});
       custom_params['status'] = webhookData.Status;
       custom_params['mobile'] = webhookData.To;
-      Logger.info(custom_params);
+      //Logger.info(custom_params);
       try {
         var url = "http://evbk.gamooga.com/ev/?c=" + qury.comp_id + "&v=" + qury.vid + "&e=" + event
         Object.entries(custom_params).forEach(
@@ -338,7 +338,7 @@ app.post('/stepwebhooksms', function (req, res) {
         console.log(url)
         axios.get(url).then(function (response) {}).catch(function (error) {
           console.log(error);
-          Logger.error(error);
+          //Logger.error(error);
         });
       } catch (err) {
         console.log('Error in Webhook from Gamooga Event API', err);
@@ -347,13 +347,14 @@ app.post('/stepwebhooksms', function (req, res) {
       }
       console.log(req.body);
       console.log(req.headers);
-      Logger.info(req.query);
-      Logger.info(JSON.stringify(req.body));
-      Logger.info(JSON.stringify(req.headers));
+      //Logger.info(req.query);
+      //Logger.info(JSON.stringify(req.body));
+      //Logger.info(JSON.stringify(req.headers));
       res.writeHead(200);
     }
   } catch (err) {
-    Logger.error('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    //Logger.error('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    console.log('Wooplr Error in Webhook from Gupshups object \n%s', err);
     res.writeHead(200);
     res.end("ERROR");
   }
