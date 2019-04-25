@@ -328,6 +328,7 @@ app.post('/stepwebhooksms', function (req, res) {
         return object
       }, {});
       custom_params['status'] = webhookData.Status;
+      custom_params['mobile'] = webhookData.To;
       Logger.info(custom_params);
       try {
         var url = "http://evbk.gamooga.com/ev/?c=" + qury.comp_id + "&v=" + qury.vid + "&e=" + event
@@ -346,7 +347,6 @@ app.post('/stepwebhooksms', function (req, res) {
       }
       console.log(req.body);
       console.log(req.headers);
-      console.log(res);
       Logger.info(req.query);
       Logger.info(JSON.stringify(req.body));
       Logger.info(JSON.stringify(req.headers));
