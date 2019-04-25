@@ -318,7 +318,7 @@ app.post('/stepwebhooksms', function (req, res) {
     if (typeof (webhookData) == 'object') {
       //Logger.info('step SMS logs');
       //console.log('step logs');
-      console.log(req.query);
+      //console.log(req.query);
       var qury = req.query;
       var event = '_sms_' + (webhookData['Status'] == 'sent' ? 'delivered' : 'failed')
       var custom_params = Object.keys(qury).reduce((object, key) => {
@@ -345,8 +345,8 @@ app.post('/stepwebhooksms', function (req, res) {
         res.writeHead(200);
         res.end("ERROR");
       }
-      console.log(req.body);
-      console.log(req.headers);
+      //console.log(req.body);
+      //console.log(req.headers);
       //Logger.info(req.query);
       //Logger.info(JSON.stringify(req.body));
       //Logger.info(JSON.stringify(req.headers));
