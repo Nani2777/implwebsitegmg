@@ -150,7 +150,6 @@ app.post('/iflwebhook', function (req, res) {
   res.writeHead(200);
   res.end("OK");
 });
-/*
 app.post('/karvywebhook', function (req, res) {
   try {
     var webhookData = req.body;
@@ -195,7 +194,6 @@ app.post('/karvywebhook', function (req, res) {
     res.end("ERROR");
   }
 });
-*/
 app.get('/karvywebhook', function (req, res) {
   try {
     console.log('karvy SMS');
