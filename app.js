@@ -425,7 +425,7 @@ app.get('/mlcwebhook', function (req, res) {
   res.end("OK");
 });
 
-/*app.post('/mlcwebhook', function (req, res) {
+app.post('/mlcwebhook', function (req, res) {
   Logger.info('mlc logs Post');
   console.log('mlc logs');
   console.log(req.body);
@@ -439,7 +439,7 @@ app.get('/mlcwebhook', function (req, res) {
   //console.log("req", req);
   res.writeHead(200);
   res.end("OK");
-});*/
+});
 
 app.get('/', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
