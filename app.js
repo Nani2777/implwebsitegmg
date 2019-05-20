@@ -439,6 +439,22 @@ app.post('/mlcwebhook', function (req, res) {
   res.end("OK");
 });
 
+app.get('/implapi', function (req, res) {
+  Logger.info('IMPL API logs');
+  console.log('IMPL API logs');
+  console.log(req.body);
+  console.log(req.query);
+  console.log(req.params);
+  console.log(req.headers);
+  Logger.info(req.body);
+  Logger.info(req.query);
+  Logger.info(req.params);
+  Logger.info(req.headers);
+  //console.log("req", req);
+  res.writeHead(200);
+  res.end("OK");
+});
+
 app.get('/', function (req, res) {
   //res.send('We can host the HTML here by using below render method'); 
   res.render('home_page.html');
