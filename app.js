@@ -469,7 +469,7 @@ app.post('/mlcwebhook', function (req, res) {
   res.end("OK");
 });
 
-app.get('/implapi', function (req, res) {
+app.post('/implapi', function (req, res) {
   Logger.info('IMPL API logs');
   console.log('IMPL API logs');
   console.log(req.body);
