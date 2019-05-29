@@ -89,7 +89,7 @@ app.get('/chatwebhook', function (req, res) {
   res.end("OK");
 });
 
-app.post('/moslwebhook', function (req, res) {
+app.post('/gmgnetcore', function (req, res) {
   try {
     let data = req.body;
     console.log(typeof (data));
@@ -107,7 +107,7 @@ app.post('/moslwebhook', function (req, res) {
           }
           return object
         }, {});
-        var Server = (params.comp_id == "fcbe3928-6512-48a6-8cb5-c8c51e100539" ? "js3in1.gamooga.com" : "evbk.gamooga.com");
+        var Server = (params.comp_id == "107a3b41-1aa3-45c6-a324-f0399a2aa2af" ? "js3in1.gamooga.com" : "evbk.gamooga.com");
         var url = "http://" + Server + "/ev/?c=" + params.comp_id + "&v=" + params.vid + "&e=_sms_delivered"
         Object.entries(custom_params).forEach(
           ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
@@ -123,7 +123,7 @@ app.post('/moslwebhook', function (req, res) {
       }
     }
   } catch {
-    console.log('Error in entries for MOSL req data', err);
+    console.log('Error in entries for netcore req data', err);
     res.writeHead(200);
     res.end("ERROR");
   }
