@@ -104,6 +104,21 @@ app.post('/gmgfalconide', function (req, res) {
   res.end("OK");
 });
 
+app.get('/gmgfalconide', function (req, res) {
+  console.log('Falconide Chaipoint logs');
+  console.log(req.body);
+  console.log(req.query);
+  console.log(req.params);
+  console.log(req.headers);
+  Logger.info(req.body);
+  Logger.info(req.query);
+  Logger.info(req.params);
+  Logger.info(req.headers);
+  //console.log("req", req);
+  res.writeHead(200);
+  res.end("OK");
+});
+
 app.post('/gmgnetcore', function (req, res) {
   try {
     let data = req.body;
