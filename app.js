@@ -519,7 +519,7 @@ app.post('/implapi', function (req, res) {
     var event = data['e'];
     var custom_params = Object.keys(data).reduce((object, key) => {
       if (key != "c" && key != "v" && key != "e") {
-        object[key] = data[value]
+        object[key] = data[key]
       }
       return object
     }, {});
