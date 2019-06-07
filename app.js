@@ -90,7 +90,7 @@ app.get('/chatwebhook', function (req, res) {
 });
 
 app.post('/gmgfalconide', function (req, res) {
-  console.log('Falconide Chaipoint logs');
+  console.log('Falconide Chaipoint Post logs');
   console.log(req.body);
   console.log(req.query);
   console.log(req.params);
@@ -105,7 +105,7 @@ app.post('/gmgfalconide', function (req, res) {
 });
 
 app.get('/gmgfalconide', function (req, res) {
-  console.log('Falconide Chaipoint logs');
+  console.log('Falconide Chaipoint Get logs');
   console.log(req.body);
   console.log(req.query);
   console.log(req.params);
