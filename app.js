@@ -502,9 +502,13 @@ app.post('/mlcwebhook', function (req, res) {
 app.post('/implapi', function (req, res) {
   Logger.info('IMPL API logs');
   console.log('IMPL API logs');
-  ///console.log(req.body);
-  //console.log(req.query);
+  console.log('Body logs');
+  console.log(req.body);
+  console.log('Query logs');
+  console.log(req.query);
+  console.log('Params logs');
   console.log(req.params);
+  console.log('Headers logs');
   console.log(req.headers);
   //Logger.info(req.body);
   //Logger.info(req.query);
@@ -513,13 +517,6 @@ app.post('/implapi', function (req, res) {
   //console.log("req", req);
   var data = req.query;
   console.log(typeof (data));
-    if (typeof (data) == 'object') {
-      //console.log(typeof (data));
-      //console.log(req.query);
-      Logger.debug(JSON.stringify(req.query));
-      var cmp_data = data['c'];
-      console.log(data);
-    }
 
   res.writeHead(200);
   res.end("OK");
