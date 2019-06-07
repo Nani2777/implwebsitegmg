@@ -513,6 +513,7 @@ app.post('/implapi', function (req, res) {
   //console.log("req", req);
   var data = req.body;
   console.log(typeof (data));
+  console.log(data[c]);
 
   res.writeHead(200);
   res.end("OK");
