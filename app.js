@@ -504,7 +504,7 @@ app.post('/implapi', function (req, res) {
     Logger.info('IMPL API logs');
     console.log('IMPL API logs');
     console.log('Body logs');
-    console.log(req);
+    console.log(req.body);
     console.log('Headers logs');
     console.log(req.headers);
     //Logger.info(req.body);
@@ -512,8 +512,38 @@ app.post('/implapi', function (req, res) {
     //Logger.info(req.params);
     //Logger.info(req.headers);
     //console.log("req", req);
-  }catch{
-
+    var data = req.body;
+    console.log(typeof (data));
+    var comp_id = data['c'];
+    var vid = data['v'];
+    var event = data['e'];
+    var custom_params = Object.keys(data).reduce((object, key) => {
+      if (key != "c" && key != "v" && key != "e") {
+        object[key] = data[value]
+      }
+      return object
+    }, {});
+    try {
+      var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event
+      Object.entries(custom_params).forEach(
+        ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+      );
+      console.log(url)
+      /*axios.get(url).then(function (response) {}).catch(function (error) {
+        console.log(error);
+        Logger.error(error);
+      });*/
+    } catch (err) {
+      console.log('Error in Webhook from Gamooga Event API', err);
+      res.writeHead(200);
+      res.end("ERROR");
+    }
+  }
+  catch (err) {
+    //console.log('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    Logger.error('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    res.writeHead(200);
+    res.end("ERROR");
   }
 });
 
