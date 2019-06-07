@@ -518,7 +518,7 @@ app.post('/implapi', function (req, res) {
       //console.log(req.query);
       Logger.debug(JSON.stringify(req.query));
       var cmp_data = data['c'];
-      console.log(cmp_data);
+      console.log(data);
     }
 
   res.writeHead(200);
