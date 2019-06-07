@@ -523,12 +523,9 @@ app.post('/implapi', function (req, res) {
       }
       return object
     }, {});
-    var str_data = JSON.stringify(custom_params);
-    var fin_data = str_data.replace('{','').replace('}','').replace(/"/g,'').replace(/,/g,'&');
-    console.log(fin_data);
     try {
       var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event
-      Object.entries(camp_data).forEach(
+      Object.entries(custom_params).forEach(
         ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
       );
       console.log(url)
