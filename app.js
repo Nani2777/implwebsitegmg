@@ -502,15 +502,25 @@ app.post('/mlcwebhook', function (req, res) {
 app.post('/implapi', function (req, res) {
   Logger.info('IMPL API logs');
   console.log('IMPL API logs');
-  console.log(req.body);
+  ///console.log(req.body);
   console.log(req.query);
-  console.log(req.params);
+  //console.log(req.params);
   console.log(req.headers);
-  Logger.info(req.body);
-  Logger.info(req.query);
-  Logger.info(req.params);
-  Logger.info(req.headers);
+  //Logger.info(req.body);
+  //Logger.info(req.query);
+  //Logger.info(req.params);
+  //Logger.info(req.headers);
   //console.log("req", req);
+  var data = req.query;
+  console.log(typeof (data));
+    if (typeof (data) == 'object') {
+      //console.log(typeof (data));
+      //console.log(req.query);
+      Logger.debug(JSON.stringify(req.query));
+      var cmp_data = data['c'];
+      console.log(cmp_data);
+    }
+
   res.writeHead(200);
   res.end("OK");
 });
