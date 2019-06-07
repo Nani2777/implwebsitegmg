@@ -548,6 +548,7 @@ app.post('/implapi', function (req, res) {
     res.writeHead(200);
     res.end("ERROR");
   }
+  res.writeHead(200);
 });
 
 app.get('/', function (req, res) {
