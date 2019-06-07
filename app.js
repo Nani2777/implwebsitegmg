@@ -523,12 +523,14 @@ app.post('/implapi', function (req, res) {
       }
       return object
     }, {});
-    console.log(custom_params);
+    var str_data = JSON.stringify(custom_params);
+    var final_data = str_data.replace('{','').replace('}','').replace(/"/g,'').replace(/,/g,'&')
+    console.log(final_data);
     try {
-      var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event
-      Object.entries(custom_params).forEach(
+      var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event +"&"+final_data
+      /*Object.entries(custom_params).forEach(
         ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
-      );
+      );*/
       console.log(url)
       /*axios.get(url).then(function (response) {}).catch(function (error) {
         console.log(error);
