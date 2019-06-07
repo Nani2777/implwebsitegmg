@@ -532,10 +532,10 @@ app.post('/implapi', function (req, res) {
         ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
       );*/
       console.log(url)
-      /*axios.get(url).then(function (response) {}).catch(function (error) {
+      axios.get(url).then(function (response) {}).catch(function (error) {
         console.log(error);
         Logger.error(error);
-      });*/
+      });
     } catch (err) {
       console.log('Error in Webhook from Gamooga Event API', err);
       res.writeHead(200);
