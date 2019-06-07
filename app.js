@@ -524,7 +524,7 @@ app.post('/implapi', function (req, res) {
       return object
     }, {});
     var str_data = JSON.stringify(custom_params);
-    var final_data = str_data.replace('{','').replace('}','').replace(/"/g,'').replace(/,/g,'&')
+    var final_data = str_data.replace('{','').replace('}','').replace(/"/g,'').replace(/,/g,'&').replace(/:/g,'=');
     console.log(final_data);
     try {
       var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event +"&"+final_data
