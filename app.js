@@ -514,7 +514,13 @@ app.post('/implapi', function (req, res) {
   var data = req.body;
   console.log(typeof (data));
   console.log(data['c']);
-
+  var custom_params = Object.keys(qury).reduce((object, key) => {
+    if (key != "c" && key != "v") {
+      object[key] = qury[key]
+    }
+    return object
+  }, {});
+  console.log(custom_params);
   res.writeHead(200);
   res.end("OK");
 });
