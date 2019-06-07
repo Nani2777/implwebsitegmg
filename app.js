@@ -504,10 +504,6 @@ app.post('/implapi', function (req, res) {
   console.log('IMPL API logs');
   console.log('Body logs');
   console.log(req.body);
-  console.log('Query logs');
-  console.log(req.query);
-  console.log('Params logs');
-  console.log(req.params);
   console.log('Headers logs');
   console.log(req.headers);
   //Logger.info(req.body);
@@ -515,7 +511,7 @@ app.post('/implapi', function (req, res) {
   //Logger.info(req.params);
   //Logger.info(req.headers);
   //console.log("req", req);
-  var data = req.query;
+  var data = req.body;
   console.log(typeof (data));
 
   res.writeHead(200);
