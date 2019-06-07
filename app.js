@@ -520,7 +520,7 @@ app.post('/implapi', function (req, res) {
     }
     return object
   }, {});
-  console.log(custom_params);
+  console.log(JSON.stringify(custom_params));
   res.writeHead(200);
   res.end("OK");
 });
