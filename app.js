@@ -523,6 +523,7 @@ app.post('/implapi', function (req, res) {
       }
       return object
     }, {});
+    console.log(custom_params);
     try {
       var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event
       Object.entries(custom_params).forEach(
