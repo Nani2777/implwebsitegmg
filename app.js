@@ -513,7 +513,7 @@ app.post('/implapi', function (req, res) {
     //Logger.info(req.headers);
     //console.log("req", req);
     var data = req.body;
-    console.log(typeof (data));
+    //console.log(typeof (data));
     var comp_id = data['c'];
     var vid = data['v'];
     var event = data['e'];
