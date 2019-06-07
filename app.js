@@ -500,31 +500,54 @@ app.post('/mlcwebhook', function (req, res) {
 });
 
 app.post('/implapi', function (req, res) {
-  Logger.info('IMPL API logs');
-  console.log('IMPL API logs');
-  console.log('Body logs');
-  console.log(req.body);
-  console.log('Headers logs');
-  console.log(req.headers);
-  //Logger.info(req.body);
-  //Logger.info(req.query);
-  //Logger.info(req.params);
-  //Logger.info(req.headers);
-  //console.log("req", req);
-  var data = req.body;
-  console.log(typeof (data));
-  console.log(data['c']);
-  var custom_params = Object.keys(data).reduce((object, key) => {
-    if (key != "c" && key != "v") {
-      object[key] = data[key]
+  try {
+    Logger.info('IMPL API logs');
+    console.log('IMPL API logs');
+    console.log('Body logs');
+    console.log(req.body);
+    console.log('Headers logs');
+    console.log(req.headers);
+    //Logger.info(req.body);
+    //Logger.info(req.query);
+    //Logger.info(req.params);
+    //Logger.info(req.headers);
+    //console.log("req", req);
+    var data = req.body;
+    console.log(typeof (data));
+    var comp_id = data['c'];
+    var vid = data['v'];
+    var event = data['e'];
+    var custom_params = Object.keys(data).reduce((object, key) => {
+      if (key != "c" && key != "v" && key != "e") {
+        object[key] = data[key]
+      }
+      return object
+    }, {});
+    var str_data = JSON.stringify(custom_params);
+    var fin_data = str_data.replace('{','').replace('}','').replace(/"/g,'').replace(/,/g,'&');
+    console.log(fin_data);
+    try {
+      var url = "http://evbk.gamooga.com/ev/?c="+ comp_id +"&v=" + vid + "&e=" + event
+      Object.entries(camp_data).forEach(
+        ([key, value]) => url = url + "&ky=" + key + "&vl=" + value + "&tp=s"
+      );
+      console.log(url)
+      axios.get(url).then(function (response) {}).catch(function (error) {
+        console.log(error);
+        Logger.error(error);
+      });
+    } catch (err) {
+      console.log('Error in Webhook from Gamooga Event API', err);
+      res.writeHead(200);
+      res.end("ERROR");
     }
-    return object
-  }, {});
-  var str_data = JSON.stringify(custom_params);
-  var fin_data = str_data.replace('{','').replace('}','').replace(/"/g,'').replace(/,/g,'&');
-  console.log(fin_data);
-  res.writeHead(200);
-  res.end("OK");
+  }
+  catch (err) {
+    //console.log('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    Logger.error('Wooplr Error in Webhook from Gupshups object \n%s', err);
+    res.writeHead(200);
+    res.end("ERROR");
+  }
 });
 
 app.get('/', function (req, res) {
