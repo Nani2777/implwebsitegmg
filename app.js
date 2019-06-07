@@ -503,8 +503,8 @@ app.post('/implapi', function (req, res) {
   Logger.info('IMPL API logs');
   console.log('IMPL API logs');
   ///console.log(req.body);
-  console.log(req.query);
-  //console.log(req.params);
+  //console.log(req.query);
+  console.log(req.params);
   console.log(req.headers);
   //Logger.info(req.body);
   //Logger.info(req.query);
