@@ -99,7 +99,8 @@ app.post('/gmgfalconide', function (req, res) {
   Logger.info(req.query);
   Logger.info(req.params);
   Logger.info(req.headers);
-  //console.log("req", req);
+  console.log('checking');
+  console.log("req", req);
   res.writeHead(200);
   res.end("OK");
 });
