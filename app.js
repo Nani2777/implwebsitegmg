@@ -92,7 +92,7 @@ app.get("/chatwebhook", function(req, res) {
 
 app.post("/gmgfalconide", function(req, res) {
   try {
-    let request = req.body;
+    let request = req.body[0];
     console.log(request);
     let WebhookData = request["X-APIHEADER"];
     let EventData = WebhookData.split(":");
