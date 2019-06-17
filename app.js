@@ -8,7 +8,7 @@ var axios = require("axios");
 var app = express();
 var Logger = require("./logger").Logger;
 var bodyParser = require("body-parser");
-const logger = require("heroku-logger");
+const herokuLogger = require("heroku-logger");
 
 app.use(function timeLog(req, res, next) {
   // this is an example of how you would call our new logging system to log an info message
@@ -91,7 +91,7 @@ app.get("/chatwebhook", function(req, res) {
 });
 
 app.post("/gmgfalconide", function(req, res) {
-  logger.info("message", JSON.stringify(req.body));
+  herokuLogger.info("message", JSON.stringify(req.body));
   let request = req.body;
   let WebhookData = request["X-APIHEADER"];
   let EventData = WebhookData.split(":");
