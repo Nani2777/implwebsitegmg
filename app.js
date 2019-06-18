@@ -93,53 +93,51 @@ app.get("/chatwebhook", function(req, res) {
 app.post("/gmgfalconide", function(req, res) {
   try {
     let request = req.body[0];
+    let ExcludeEvents = request["EVENT"];
     console.log(request);
-    let WebhookData = request["X-APIHEADER"];
-    let EventData = WebhookData.split(":");
-    let comp_id = "107a3b41-1aa3-45c6-a324-f0399a2aa2af";
-    let visid = EventData[1];
+    if (ExcludeEvents == "clicked" || ExcludeEvents == "opened") {
+      let WebhookData = request["X-APIHEADER"];
+      let EventData = WebhookData.split(":");
+      let comp_id = "107a3b41-1aa3-45c6-a324-f0399a2aa2af";
+      let visid = EventData[1];
 
-    let event = `_email_${
-      request["EVENT"] == "sent" ? "delivered" : request["EVENT"]
-    }`;
+      let event = `_email_${
+        request["EVENT"] == "sent" ? "delivered" : request["EVENT"]
+      }`;
 
-    let data = new Object({
-      cp_type: EventData[2],
-      cp_id: EventData[3],
-      tp: EventData[4],
-      tpid: EventData[5]
-    });
-
-    event == "_email_dropped" || event == "_email_bounced"
-      ? (data["reason"] = request["RESPONSE"])
-      : "";
-    event == "email_bounced"
-      ? (data["bounce_type"] = request["BOUNCE_TYPE"])
-      : "";
-
-    var url =
-      "http://evbk.gamooga.com/ev/?c=" +
-      comp_id +
-      "&v=" +
-      visid +
-      "&e=" +
-      event;
-
-    Object.entries(data).forEach(
-      ([key, value]) => (url = url + "&ky=" + key + "&vl=" + value + "&tp=s")
-    );
-    console.log(url);
-    axios
-      .get(url)
-      .then(function(response) {
-        console.log(response.statusText);
-      })
-      .catch(function(error) {
-        console.log(error);
+      let data = new Object({
+        cp_type: EventData[2],
+        cp_id: EventData[3],
+        tp: EventData[4],
+        tpid: EventData[5]
       });
+
+      event == "_email_dropped" || event == "_email_bounced"
+        ? (data["reason"] = request["RESPONSE"])
+        : "";
+      event == "email_bounced"
+        ? (data["bounce_type"] = request["BOUNCE_TYPE"])
+        : "";
+
+      //var url = "http://evbk.gamooga.com/ev/?c=" +comp_id +"&v=" + visid +"&e=" +event;
+      var url = `http://evbk.gamooga.com/ev/?c=${comp_id}&v=${visid}&e=${event}`;
+
+      Object.entries(data).forEach(
+        ([key, value]) => (url = url + `&ky=${key}&vl=${value}&tp=s`)
+      );
+      console.log(url);
+      axios
+        .get(url)
+        .then(function(response) {
+          console.log(response.statusText);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   } catch (e) {
     res.writeHead(200);
-    res.end("OK");
+    res.end("ERROR");
   }
   res.writeHead(200);
   res.end("OK");
