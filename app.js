@@ -115,7 +115,7 @@ app.post("/gmgfalconide", function(req, res) {
       event == "_email_dropped" || event == "_email_bounced"
         ? (data["reason"] = request["RESPONSE"])
         : "";
-      event == "email_bounced"
+      event == "_email_bounced"
         ? (data["bounce_type"] = request["BOUNCE_TYPE"])
         : "";
 
