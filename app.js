@@ -95,7 +95,7 @@ app.post("/gmgfalconide", function(req, res) {
     let request = req.body[0];
     let ExcludeEvents = request["EVENT"];
     console.log(request);
-    if (ExcludeEvents !== "clicked" || ExcludeEvents !== "opened") {
+    if (ExcludeEvents !== "clicked" && ExcludeEvents !== "opened") {
       let WebhookData = request["X-APIHEADER"];
       let EventData = WebhookData.split(":");
       let comp_id = "107a3b41-1aa3-45c6-a324-f0399a2aa2af";
