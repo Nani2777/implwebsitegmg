@@ -39,9 +39,9 @@ app.use(
 );
 app.use(cookieParser());
 app.use("/public", express.static(__dirname + "/public"));
-app.use("/path1", express.static(__dirname + "/path1"));
-app.use("/path2", express.static(__dirname + "/path2"));
-app.use("gamooga",express.static(__dirname + "gamooga"));
+//app.use("/path1", express.static(__dirname + "/path1"));
+//app.use("/path2", express.static(__dirname + "/path2"));
+//app.use("gamooga",express.static(__dirname + "gamooga"));
 app.use("/", express.static(__dirname + "/"));
 
 // catch 404 and forward to error handler
