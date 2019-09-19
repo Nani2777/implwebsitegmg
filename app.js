@@ -24,7 +24,7 @@ nunjucks.configure("views", {
 // view engine setup
 app.set('port', process.env.PORT || 2777);
 app.set('views', path.join(__dirname, 'views'));
-//app.use("gamooga",path.join(__dirname + "gamooga"));
+app.use("gamooga",path.join(__dirname + "gamooga"));
 //app.use("/path2",path.join(__dirname + "/path2"));
 app.set("view engine", "nunjucks");
 //app.set('views', path.join(__dirname, 'img')); - To give permissions to that folder
